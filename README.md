@@ -73,8 +73,6 @@ app
 │       ├── auth.js
 │       ├── filter.js
 ├── router.js
-└── service
-    └── user.js
 config
  ├── config.default.js
  └── plugin.js

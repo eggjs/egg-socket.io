@@ -1,6 +1,5 @@
 'use strict';
 
-
 const is = require('is-type-of');
 const assert = require('assert');
 const SocketIO = require('socket.io');
