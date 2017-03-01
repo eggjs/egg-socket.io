@@ -32,7 +32,7 @@ $ npm i egg-socket.io --save
 
 ```js
 // {app_root}/config/plugin.js
-exports.websocket = {
+exports.io = {
   enable: true,
   package: 'egg-socket.io',
 };
@@ -42,7 +42,17 @@ exports.websocket = {
 
 ```js
 // {app_root}/config/config.default.js
-exports.websocket = {
+exports.io = {
+  namespace: {
+    '/': {
+      connectionMiddleware: [],
+      packetMiddleware: [],
+    },
+  },
+  redis: {
+    host: '127.0.0.1',
+    port: 6379
+  }
 };
 ```
 
@@ -51,6 +61,110 @@ see [config/config.default.js](config/config.default.js) for more detail.
 ## Example
 
 <!-- example here -->
+
+### Directory Structure
+
+```
+app
+├── io
+│   ├── controller
+│   │   └── chat.js
+│   └── middleware
+│       ├── auth.js
+│       ├── filter.js
+├── router.js
+└── service
+    └── user.js
+config
+ ├── config.default.js
+ └── plugin.js
+```
+
+### Middleware
+
+middleware are functions which every connection or packet will be processed by.
+
+#### Connection Middleware
+
+- Write your connection middleware
+`app/io/middleware/auth.js`
+```js
+module.exports = app => {
+    return function* (next) {
+        this.socket.emit('res', 'connected!');
+        yield* next;
+        // execute when disconnect.
+        console.log('disconnection!');
+    };
+};
+```
+- then config this middleware to make it works.
+
+`config/config.default.js`
+```js
+exports.io = {
+  namespace: {
+    '/': {
+      connectionMiddleware: ['auth'],
+    },
+  },
+};
+```
+
+pay attention to the namespace, the config will only work for a specific namespace.
+
+#### Packet Middleware
+
+- Write your packet middleware
+`app/io/middleware/filter.js`
+```js
+module.exports = app => {
+    return function* (next) {
+        this.socket.emit('res', 'packet received!');
+        console.log('packet:', this.packet);
+        yield* next;
+    };
+};
+```
+- then config this middleware to make it works.
+
+`config/config.default.js`
+```js
+exports.io = {
+  namespace: {
+    '/': {
+      packetMiddleware: ['filter'],
+    },
+  },
+};
+```
+
+pay attention to the namespace, the config will only work for a specific namespace.
+
+### Controller
+
+controller is designed to handle the `emit` event from the client.
+
+example:
+
+`app/io/controller/chat.js`
+```js
+module.exports = app => {
+  return function* () {
+    const message = this.args[0];
+    console.log(message);
+    this.socket.emit('res', `Hi! I've got your message: ${message}`);
+  };
+};
+```
+
+next, config the router at `app/router.js`
+```js
+module.exports = app => {
+  // or app.io.of('/')
+  app.io.route('chat', app.io.controllers.chat);
+};
+```
 
 ## Questions & Suggestions
 

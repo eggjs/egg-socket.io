@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "egg plugin for socket.io",
   "eggPlugin": {
-    "name": "socket.io"
+    "name": "io"
   },
   "keywords": [
     "egg",
@@ -13,18 +13,22 @@
     "websocket"
   ],
   "dependencies": {
-    "socket.io": "^1.7.2",
-    "socket.io-redis": "^3.1.0"
+    "co": "^4.6.0",
+    "debug": "^2.6.1",
+    "is-type-of": "^1.0.0",
+    "koa-compose": "^2.5.1",
+    "socket.io": "^1.7.3",
+    "socket.io-redis": "^4.0.0"
   },
   "devDependencies": {
     "autod": "^2.7.1",
-    "egg": "^0.7.0",
-    "egg-bin": "^1.10.0",
-    "egg-ci": "^1.1.0",
-    "egg-mock": "^2.0.0",
-    "eslint": "^3.13.1",
+    "egg": "^1.0.0-rc.1",
+    "egg-bin": "^2.2.3",
+    "egg-ci": "^1.3.0",
+    "egg-mock": "^3.0.1",
+    "eslint": "^3.16.1",
     "eslint-config-egg": "^3.2.0",
-    "supertest": "^2.0.1",
+    "supertest": "^3.0.0",
     "webstorm-disable-index": "^1.1.2"
   },
   "engines": {

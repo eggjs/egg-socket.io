@@ -5,11 +5,11 @@ const mm = require('egg-mock');
 
 describe('test/socketio.test.js', () => {
   let app;
-  before(() => {
+  before(done => {
     app = mm.app({
-      baseDir: 'apps/socketio-test',
+      baseDir: 'apps/socket.io-test',
     });
-    return app.ready();
+    app.ready(done);
   });
 
   after(() => app.close());
@@ -18,7 +18,7 @@ describe('test/socketio.test.js', () => {
   it('should GET /', () => {
     return request(app.callback())
       .get('/')
-      .expect('hi, websocket')
+      .expect('hi, socket.io')
       .expect(200);
   });
 });
