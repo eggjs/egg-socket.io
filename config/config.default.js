@@ -1,13 +1,15 @@
 'use strict';
 
 /**
- * websocket default config
- * @member Config#websocket
- * @property {String} SOME_KEY - some description
+ * socket.io default config
+ * @member Config#io
+ * @property {String} SOME_KEY - some description todo
  */
-exports['socket.io'] = {
-  redis: {
-    host: '127.0.0.1',
-    port: 6379,
+exports.io = {
+  namespace: {
+    '/': {
+      connectionMiddleware: [],
+      packetMiddleware: [],
+    },
   },
 };

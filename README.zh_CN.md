@@ -20,57 +20,152 @@
 [download-image]: https://img.shields.io/npm/dm/egg-socket.io.svg?style=flat-square
 [download-url]: https://npmjs.org/package/egg-socket.io
 
-<!--
-Description here.
--->
+egg 框架的 socket.io 插件
 
-## 依赖说明
+## 安装
 
-### 依赖的 egg 版本
+```bash
+$ npm i egg-socket.io --save
+```
 
-egg-socket.io 版本 | egg 1.x
---- | ---
-1.x | 😁
-0.x | ❌
-
-### 依赖的插件
-<!--
-
-如果有依赖其它插件，请在这里特别说明。如
-
-- security
-- multipart
-
--->
-
-## 开启插件
+## 用法
 
 ```js
-// config/plugin.js
-exports['socket.io'] = {
+// {app_root}/config/plugin.js
+exports.io = {
   enable: true,
   package: 'egg-socket.io',
 };
 ```
 
-## 使用场景
+## 配置
 
-- Why and What: 描述为什么会有这个插件，它主要在完成一件什么事情。
-尽可能描述详细。
-- How: 描述这个插件是怎样使用的，具体的示例代码，甚至提供一个完整的示例，并给出链接。
+```js
+// {app_root}/config/config.default.js
+exports.io = {
+  namespace: {
+    '/': {
+      connectionMiddleware: [],
+      packetMiddleware: [],
+    },
+  },
+  redis: {
+    host: '127.0.0.1',
+    port: 6379
+  }
+};
+```
 
-## 详细配置
+see [config/config.default.js](config/config.default.js) for more detail.
 
-请到 [config/config.default.js](config/config.default.js) 查看详细配置项说明。
+## 例子
 
-## 单元测试
+### 目录结构
 
-<!-- 描述如何在单元测试中使用此插件，例如 schedule 如何触发。无则省略。-->
+```
+app
+├── io
+│   ├── controller
+│   │   └── chat.js
+│   └── middleware
+│       ├── auth.js
+│       ├── filter.js
+├── router.js
+config
+ ├── config.default.js
+ └── plugin.js
+```
 
-## 提问交流
+### 中间件
 
-请到 [egg issues](https://github.com/eggjs/egg/issues) 异步交流。
+middleware are functions which every connection or packet will be processed by.
 
-## License
+#### 连接中间件
+
+- 编写连接中间件
+`app/io/middleware/auth.js`
+```js
+module.exports = app => {
+    return function* (next) {
+        this.socket.emit('res', 'connected!');
+        yield* next;
+        // execute when disconnect.
+        console.log('disconnection!');
+    };
+};
+```
+- 配置使之生效
+
+`config/config.default.js`
+```js
+exports.io = {
+  namespace: {
+    '/': {
+      connectionMiddleware: ['auth'],
+    },
+  },
+};
+```
+
+注意，必须配置在特定的命名空间下，才会生效
+
+#### 包中间件
+
+- 编写包中间件
+`app/io/middleware/filter.js`
+```js
+module.exports = app => {
+    return function* (next) {
+        this.socket.emit('res', 'packet received!');
+        console.log('packet:', this.packet);
+        yield* next;
+    };
+};
+```
+- 配置使之生效
+
+`config/config.default.js`
+```js
+exports.io = {
+  namespace: {
+    '/': {
+      packetMiddleware: ['filter'],
+    },
+  },
+};
+```
+
+注意，必须配置在特定的命名空间下，才会生效
+
+### 控制器
+
+controller is designed to handle the `emit` event from the client.
+
+example:
+
+`app/io/controller/chat.js`
+```js
+module.exports = app => {
+  return function* () {
+    const message = this.args[0];
+    console.log(message);
+    this.socket.emit('res', `Hi! I've got your message: ${message}`);
+  };
+};
+```
+
+下一步，在 `app/router.js` 配置路由
+```js
+module.exports = app => {
+  // or app.io.of('/')
+  app.io.route('chat', app.io.controllers.chat);
+};
+```
+
+## 问题 & 建议
+
+请访问 [here](https://github.com/eggjs/egg/issues).
+
+## 
 
 [MIT](LICENSE)
