@@ -9,7 +9,7 @@ const util = require('util');
 const path = require('path');
 const co = require('co');
 const Emitter = require('events').EventEmitter;
-const debug = require('debug')('egg-socket.io');
+const debug = require('debug')('egg-socket.io:app.js');
 const RouterConfigSymbol = Symbol.for('EGG-SOCKET.IO#ROUTERCONFIG');
 
 module.exports = app => {
@@ -32,6 +32,8 @@ module.exports = app => {
     target: app.io.controllers,
     inject: app,
   }).load();
+
+  debug('[egg-socket.io] app.io.controllers:', app.io.controllers);
 
   const namespace = config.namespace;
 
@@ -60,12 +62,13 @@ module.exports = app => {
       }
     }
 
+    debug('[egg-socket.io] initNsp: %s', nsp);
     initNsp(app.io.of(nsp), connectionMiddlewares, packetMiddlewares);
   }
 
   function initNsp(nsp, connectionMiddlewares, packetMiddlewares) {
     nsp.on('connection', socket => {
-      socket.use(function(packet, next) {
+      socket.use((packet, next) => {
         const request = { socket, packet };
         const ctx = app.createContext(request, new http.ServerResponse(request));
         util._extend(ctx, Emitter.prototype);
@@ -79,7 +82,6 @@ module.exports = app => {
 
         co.wrap(composed).call(ctx).catch(e => console.log(e));
       });
-
       if (nsp[RouterConfigSymbol]) {
         for (const [ event, handlr ] of nsp[RouterConfigSymbol].entries()) {
           socket.on(event, (...args) => {
@@ -87,10 +89,10 @@ module.exports = app => {
             ctx.args = ctx.req.args = args;
 
             co.wrap(handlr).call(ctx)
-            .then(() => {
-              ctx.emit('finshed');
-            })
-            .catch(e => console.log(e));
+              .then(() => {
+                ctx.emit('finshed');
+              })
+              .catch(e => console.log(e));
           });
         }
       }
@@ -112,21 +114,18 @@ module.exports = app => {
       const ctx = app.createContext(request, new http.ServerResponse(request));
 
       co.wrap(composed).call(ctx)
-      .then(next)
-      .catch(e => console.log(e));
+        .then(next)
+        .catch(e => console.log(e));
     });
   }
 
-  app.beforeStart(() => {
-    return new Promise(resolve => {
-      app.on('server', server => {
-        app.io.attach(server);
-        if (config.redis) {
-          app.io.adapter(redis(config.redis));
-        }
-        debug('[egg-socket.io] init ready!');
-        process.nextTick(resolve);
-      });
-    });
+  if (config.redis) {
+    app.io.adapter(redis(config.redis));
+    debug('[egg-socket.io] init socket.io-redis ready!');
+  }
+
+  app.on('server', server => {
+    app.io.attach(server);
+    debug('[egg-socket.io] init ready!');
   });
 };
