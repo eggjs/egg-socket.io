@@ -11,7 +11,7 @@ install:
   # - '@ECHO Redis Started'
   - ps: Install-Product node $env:nodejs_version
   - npm i npminstall && node_modules\.bin\npminstall
-  - npm i npminstall && node_modules\.bin\npminstall
+  - node t.js
 
 test_script:
   - node --version
