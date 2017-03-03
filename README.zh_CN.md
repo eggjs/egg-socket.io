@@ -28,7 +28,9 @@ egg 框架的 socket.io 插件
 $ npm i egg-socket.io --save
 ```
 
-## 用法
+## 配置
+
+通过 `config/plugin.js` 配置启动 Socket.IO 插件:
 
 ```js
 // {app_root}/config/plugin.js
@@ -38,10 +40,9 @@ exports.io = {
 };
 ```
 
-## 配置
+在 `config/config.${env}.js` 配置 Socket.IO ：
 
 ```js
-// {app_root}/config/config.default.js
 exports.io = {
   namespace: {
     '/': {
@@ -58,7 +59,20 @@ exports.io = {
 
 see [config/config.default.js](config/config.default.js) for more detail.
 
-## 例子
+## 部署
+
+由于 Socket.IO 的设计缘故，多进程的 Socket.IO 服务必须在 `sticky` 模式下才能工作，否则会抛出握手异常。
+
+所以，必须开启 `sticky` 模式：
+
+```js
+startCluster(
+  sticky: true,
+  ...
+);
+```
+
+## 用法
 
 ### 目录结构
 
