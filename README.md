@@ -28,7 +28,9 @@ egg plugin for socket.io
 $ npm i egg-socket.io --save
 ```
 
-## Usage
+## Configuration
+
+Change `${app_root}/config/plugin.js` to enable Socket.IO plugin:
 
 ```js
 // {app_root}/config/plugin.js
@@ -38,10 +40,9 @@ exports.io = {
 };
 ```
 
-## Configuration
+Configure Socket.IO in `${app_root}/config/config.default.js`:
 
 ```js
-// {app_root}/config/config.default.js
 exports.io = {
   namespace: {
     '/': {
@@ -58,9 +59,20 @@ exports.io = {
 
 see [config/config.default.js](config/config.default.js) for more detail.
 
-## Example
+## Deployment
 
-<!-- example here -->
+Because of socket.io's design, the multi process socket.io server must work at `sticky` mode.
+
+So, you must start server with `sticky` set to true, otherwise it will cause handshake exception.
+
+```js
+startCluster(
+  sticky: true,
+  ...
+);
+```
+
+## Usage
 
 ### Directory Structure
 
