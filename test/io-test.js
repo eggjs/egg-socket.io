@@ -32,7 +32,7 @@ describe('test/socketio.test.js', () => {
     });
   });
 
-  it('should mutil process works ok with sticky mode', done => {
+  it.skip('should mutil process works ok with sticky mode', done => {
     const app = mm.cluster({
       baseDir: 'apps/socket.io-test',
       workers: 2,
