@@ -109,11 +109,11 @@ class Master extends EventEmitter {
     s = Number(s);
     const pid = ws[s % workerNumbers];
 
-    console.log('workerNumbers:', workerNumbers);
-    console.log('ws:', ws);
-    console.log('s:', s);
-    console.log('pid:', pid);
-    console.log('s % workerNumbers:', s % workerNumbers);
+    console.error('workerNumbers:', workerNumbers);
+    console.error('ws:', ws);
+    console.error('s:', s);
+    console.error('pid:', pid);
+    console.error('s % workerNumbers:', s % workerNumbers);
 
     return this.workers.get(pid);
   }
