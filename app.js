@@ -69,8 +69,10 @@ module.exports = app => {
   function initNsp(nsp, connectionMiddlewares, packetMiddlewares) {
     nsp.on('connection', socket => {
       socket.use((packet, next) => {
-        const request = { socket, packet };
+        const request = socket.request;
+        request.socket = socket;
         const ctx = app.createContext(request, new http.ServerResponse(request));
+        ctx.packet = packet;
         util._extend(ctx, Emitter.prototype);
 
         const composed = compose([ ...packetMiddlewares, function* () {
@@ -110,7 +112,8 @@ module.exports = app => {
         };
       } ]);
 
-      const request = { socket };
+      const request = socket.request;
+      request.socket = socket;
       const ctx = app.createContext(request, new http.ServerResponse(request));
 
       co.wrap(composed).call(ctx)
