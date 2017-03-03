@@ -6,6 +6,6 @@ module.exports = () => {
     const say = yield this.service.user.say();
     this.socket.emit('res', 'packet!' + say);
     yield* next;
-    console.log('packet response!')
+    console.log('packet response!');
   };
 };

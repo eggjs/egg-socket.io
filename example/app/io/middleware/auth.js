@@ -5,6 +5,6 @@ module.exports = () => {
     const say = yield this.service.user.say();
     this.socket.emit('res', 'auth!' + say);
     yield* next;
-    console.log('disconnect!')
+    console.log('disconnect!');
   };
 };
