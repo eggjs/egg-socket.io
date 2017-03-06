@@ -5,7 +5,8 @@ const compose = require('koa-compose');
 const assert = require('assert');
 const is = require('is-type-of');
 const http = require('http');
-const util = require('util');
+const extend = require('extend');
+const delegate = require('delegates');
 const path = require('path');
 const co = require('co');
 const Emitter = require('events').EventEmitter;
@@ -34,12 +35,16 @@ module.exports = app => {
   }).load();
 
   debug('[egg-socket.io] app.io.controllers:', app.io.controllers);
+  debug('[egg-socket.io] app.io.middlewares:', app.io.middlewares);
 
   const namespace = config.namespace;
 
   for (const nsp in namespace) {
     const connectionMiddlewareConfig = namespace[nsp].connectionMiddleware;
     const packetMiddlewareConfig = namespace[nsp].packetMiddleware;
+
+    debug('[egg-socket.io] connectionMiddlewareConfig: ', connectionMiddlewareConfig);
+    debug('[egg-socket.io] packetMiddlewareConfig: ', packetMiddlewareConfig);
 
     const connectionMiddlewares = [];
     const packetMiddlewares = [];
@@ -63,6 +68,9 @@ module.exports = app => {
     }
 
     debug('[egg-socket.io] initNsp: %s', nsp);
+
+    debug('[egg-socket.io] connectionMiddlewares: ', connectionMiddlewares);
+    debug('[egg-socket.io] packetMiddlewares: ', packetMiddlewares);
     initNsp(app.io.of(nsp), connectionMiddlewares, packetMiddlewares);
   }
 
@@ -73,12 +81,35 @@ module.exports = app => {
         request.socket = socket;
         const ctx = app.createContext(request, new http.ServerResponse(request));
         ctx.packet = packet;
-        util._extend(ctx, Emitter.prototype);
+        extend(ctx, Emitter.prototype);
+
+        delegate(ctx, 'socket')
+        .getter('client')
+        .getter('server')
+        .getter('adapter')
+        .getter('id')
+        .getter('conn')
+        .getter('rooms')
+        .getter('acks')
+        .getter('json')
+        .getter('volatile')
+        .getter('broadcast')
+        .getter('connected')
+        .getter('disconnected')
+        .getter('handshake')
+        .method('join')
+        .method('leave')
+        .method('emit')
+        .method('to')
+        .method('in')
+        .method('send')
+        .method('write')
+        .method('disconnect');
 
         const composed = compose([ ...packetMiddlewares, function* () {
           packet.push(ctx);
           next();
-          // after socket emit disconnect, resume middlewares
+          // after controller execute finished, resume middlewares
           yield done => ctx.on('finshed', done);
         } ]);
 
@@ -115,6 +146,29 @@ module.exports = app => {
       const request = socket.request;
       request.socket = socket;
       const ctx = app.createContext(request, new http.ServerResponse(request));
+
+      delegate(ctx, 'socket')
+        .getter('client')
+        .getter('server')
+        .getter('adapter')
+        .getter('id')
+        .getter('conn')
+        .getter('rooms')
+        .getter('acks')
+        .getter('json')
+        .getter('volatile')
+        .getter('broadcast')
+        .getter('connected')
+        .getter('disconnected')
+        .getter('handshake')
+        .method('join')
+        .method('leave')
+        .method('emit')
+        .method('to')
+        .method('in')
+        .method('send')
+        .method('write')
+        .method('disconnect');
 
       co.wrap(composed).call(ctx)
         .then(next)

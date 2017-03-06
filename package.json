@@ -15,6 +15,8 @@
   "dependencies": {
     "co": "^4.6.0",
     "debug": "^2.6.1",
+    "delegates": "^1.0.0",
+    "extend": "^3.0.0",
     "is-type-of": "^1.0.0",
     "koa-compose": "^2.5.1",
     "socket.io": "^1.7.3",
@@ -28,6 +30,7 @@
     "egg-mock": "^3.0.1",
     "eslint": "^3.16.1",
     "eslint-config-egg": "^3.2.0",
+    "pedding": "^1.1.0",
     "supertest": "^3.0.0",
     "webstorm-disable-index": "^1.1.2"
   },
