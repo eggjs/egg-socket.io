@@ -1,4 +1,11 @@
 
+1.0.0-beta.2 / 2017-03-07
+==================
+
+  * test:more test (#5)
+  * chore:fix format
+  * chore:fix example (#4)
+
 1.0.0-beta.1 / 2017-03-03
 ==================
 
