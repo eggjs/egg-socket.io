@@ -4,6 +4,7 @@ const mm = require('egg-mock');
 const assert = require('assert');
 const request = require('supertest');
 const fs = require('fs');
+const pedding = require('pedding');
 const ioc = require('socket.io-client');
 
 let basePort = 17001;
@@ -13,7 +14,6 @@ function client(nsp = '', opts = {}) {
   if (opts.query) {
     url += '?' + opts.query;
   }
-  console.log('url:', url);
   return ioc(url, opts);
 }
 
@@ -74,21 +74,52 @@ describe('test/socketio.test.js', () => {
     });
   });
 
-  // describe('connectionMiddleware', () => {
-  //   it('should connectionMiddleware works ok when connection established', done => {
+  describe('connectionMiddleware', () => {
+    it('should connectionMiddleware works ok when connection established & disconnected', done => {
+      const app = mm.cluster({
+        baseDir: 'apps/socket.io-connectionMiddleware',
+        workers: 2,
+        sticky: true,
+      });
 
-  //   });
+      app.ready().then(() => {
+        const socket = client('', { port: basePort });
+        socket.on('error', done);
+        socket.on('connected', disconnectFile => {
+          socket.close();
+          setTimeout(() => {
+            assert(fs.readFileSync(disconnectFile).toString(), 'true');
+            fs.unlinkSync(disconnectFile);
+            app.close().then(done, done);
+          }, 500);
+        });
+      });
+    });
+  });
 
-  //   it('should connectionMiddleware works ok when disconnected', done => {
-
-  //   });
-  // });
-
-  // describe('packetMiddleware', () => {
-  //   it('should packetMiddleware works ok', done => {
-
-  //   });
-  // });
+  describe('packetMiddleware', () => {
+    it('should packetMiddleware works ok', _done => {
+      const app = mm.cluster({
+        baseDir: 'apps/socket.io-packetMiddleware',
+        workers: 2,
+        sticky: true,
+      });
+      const done = pedding(_done, 2);
+      app.ready().then(() => {
+        const socket = client('', { port: basePort });
+        socket.on('error', done);
+        socket.on('packet1', () => {
+          done();
+        });
+        socket.on('packet2', () => {
+          app.close().then(done, done);
+        });
+        socket.on('connect', () => {
+          socket.emit('a', '');
+        });
+      });
+    });
+  });
 
   describe('session', () => {
     it('with session allowed', done => {

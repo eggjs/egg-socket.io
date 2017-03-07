@@ -1,9 +1,14 @@
 'use strict';
 
+const fs = require('fs');
+
 module.exports = app => {
-    return function* (next) {
-        this.socket.emit('res', 'auth!');
-        yield* next;
-        console.log('auth midware 后!');
-    };
+  if (fs.existsSync(app.config.disconnectFile)) {
+    fs.unlinkSync(app.config.disconnectFile);
+  }
+  return function* (next) {
+    this.emit('connected', app.config.disconnectFile);
+    yield* next;
+    fs.writeFile(app.config.disconnectFile, 'true');
+  };
 };

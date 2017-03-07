@@ -109,8 +109,11 @@ module.exports = app => {
         const composed = compose([ ...packetMiddlewares, function* () {
           packet.push(ctx);
           next();
-          // after controller execute finished, resume middlewares
-          yield done => ctx.on('finshed', done);
+          if (nsp[RouterConfigSymbol]) {
+            debug('[egg-socket.io] wait controller finshed!');
+            // after controller execute finished, resume middlewares
+            yield done => ctx.on('finshed', done);
+          }
         } ]);
 
         co.wrap(composed).call(ctx).catch(e => console.log(e));
