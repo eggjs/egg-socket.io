@@ -32,10 +32,10 @@ describe('test/socketio.test.js', () => {
     app.ready().then(() => {
       const socket = client('', { port: basePort });
       socket.on('connect', () => socket.emit('chat', ''));
-      socket.on('error', done);
+      socket.on('disconnect', () => app.close().then(done, done));
       socket.on('res', msg => {
         assert(msg === 'hello');
-        app.close().then(done, done);
+        socket.close();
       });
     });
   });
@@ -49,10 +49,10 @@ describe('test/socketio.test.js', () => {
     app.ready().then(() => {
       const socket = client('', { port: basePort });
       socket.on('connect', () => socket.emit('chat', ''));
-      socket.on('error', done);
+      socket.on('disconnect', () => app.close().then(done, done));
       socket.on('res', msg => {
         assert(msg === 'hello');
-        app.close().then(done, done);
+        socket.close();
       });
     });
   });
@@ -66,10 +66,10 @@ describe('test/socketio.test.js', () => {
     app.ready().then(() => {
       const socket = client('', { port: basePort });
       socket.on('connect', () => socket.emit('chat', ''));
-      socket.on('error', done);
+      socket.on('disconnect', () => app.close().then(done, done));
       socket.on('res', msg => {
         assert(msg === 'hello');
-        app.close().then(done, done);
+        socket.close();
       });
     });
   });
@@ -84,7 +84,6 @@ describe('test/socketio.test.js', () => {
 
       app.ready().then(() => {
         const socket = client('', { port: basePort });
-        socket.on('error', done);
         socket.on('connected', disconnectFile => {
           socket.close();
           setTimeout(() => {
@@ -107,16 +106,10 @@ describe('test/socketio.test.js', () => {
       const done = pedding(_done, 2);
       app.ready().then(() => {
         const socket = client('', { port: basePort });
-        socket.on('error', done);
-        socket.on('packet1', () => {
-          done();
-        });
-        socket.on('packet2', () => {
-          app.close().then(done, done);
-        });
-        socket.on('connect', () => {
-          socket.emit('a', '');
-        });
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('packet1', () => done());
+        socket.on('packet2', () => socket.close());
+        socket.on('connect', () => socket.emit('a', ''));
       });
     });
   });
@@ -138,7 +131,6 @@ describe('test/socketio.test.js', () => {
             const cookie = encodeURIComponent(res.headers['set-cookie'].join(';'));
             const socket = client('', { query: 'cookie=' + cookie, port: basePort });
             socket.on('connect', () => socket.emit('chat', ''));
-            socket.on('error', done);
             socket.on('forbidden', () => done(new Error('forbidden')));
             let disconnectFile = '';
             socket.on('join', p => { disconnectFile = p; });
@@ -169,10 +161,8 @@ describe('test/socketio.test.js', () => {
           .expect('hello', function requestDone(err) {
             assert(!err, err);
             const socket = client('', { port: basePort });
-            socket.on('error', done);
-            socket.on('forbidden', () => {
-              app.close().then(done, done);
-            });
+            socket.on('disconnect', () => app.close().then(done, done));
+            socket.on('forbidden', () => socket.close());
           });
       });
     });
