@@ -33,9 +33,10 @@ describe('test/socketio.test.js', () => {
       const socket = client('', { port: basePort });
       socket.on('connect', () => socket.emit('chat', ''));
       socket.on('error', done);
+      socket.on('disconnect', () => app.close().then(done, done));
       socket.on('res', msg => {
         assert(msg === 'hello');
-        app.close().then(done, done);
+        socket.close();
       });
     });
   });
@@ -50,9 +51,10 @@ describe('test/socketio.test.js', () => {
       const socket = client('', { port: basePort });
       socket.on('connect', () => socket.emit('chat', ''));
       socket.on('error', done);
+      socket.on('disconnect', () => app.close().then(done, done));
       socket.on('res', msg => {
         assert(msg === 'hello');
-        app.close().then(done, done);
+        socket.close();
       });
     });
   });
@@ -67,9 +69,10 @@ describe('test/socketio.test.js', () => {
       const socket = client('', { port: basePort });
       socket.on('connect', () => socket.emit('chat', ''));
       socket.on('error', done);
+      socket.on('disconnect', () => app.close().then(done, done));
       socket.on('res', msg => {
         assert(msg === 'hello');
-        app.close().then(done, done);
+        socket.close();
       });
     });
   });
@@ -108,15 +111,10 @@ describe('test/socketio.test.js', () => {
       app.ready().then(() => {
         const socket = client('', { port: basePort });
         socket.on('error', done);
-        socket.on('packet1', () => {
-          done();
-        });
-        socket.on('packet2', () => {
-          app.close().then(done, done);
-        });
-        socket.on('connect', () => {
-          socket.emit('a', '');
-        });
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('packet1', () => done());
+        socket.on('packet2', () => socket.close());
+        socket.on('connect', () => socket.emit('a', ''));
       });
     });
   });
@@ -170,9 +168,8 @@ describe('test/socketio.test.js', () => {
             assert(!err, err);
             const socket = client('', { port: basePort });
             socket.on('error', done);
-            socket.on('forbidden', () => {
-              app.close().then(done, done);
-            });
+            socket.on('disconnect', () => app.close().then(done, done));
+            socket.on('forbidden', () => socket.close());
           });
       });
     });
