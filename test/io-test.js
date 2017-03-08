@@ -68,7 +68,10 @@ describe('test/socketio.test.js', () => {
     app.ready().then(() => {
       const socket = client('', { port: basePort });
       socket.on('connect', () => socket.emit('chat', ''));
-      socket.on('error', done);
+      socket.on('error', e => {
+        console.log(e);
+        done(e);
+      });
       socket.on('disconnect', () => app.close().then(done, done));
       socket.on('res', msg => {
         assert(msg === 'hello');
@@ -167,7 +170,10 @@ describe('test/socketio.test.js', () => {
           .expect('hello', function requestDone(err) {
             assert(!err, err);
             const socket = client('', { port: basePort });
-            socket.on('error', done);
+            socket.on('error', e => {
+              console.log(e);
+              done(e);
+            });
             socket.on('disconnect', () => app.close().then(done, done));
             socket.on('forbidden', () => socket.close());
           });
