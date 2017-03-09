@@ -66,10 +66,10 @@ Because of socket.io's design, the multi process socket.io server must work at `
 So, you must start server with `sticky` set to true, otherwise it will cause handshake exception.
 
 ```js
-startCluster(
+startCluster({
   sticky: true,
   ...
-);
+});
 ```
 
 ## Usage

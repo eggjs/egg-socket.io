@@ -66,10 +66,10 @@ see [config/config.default.js](config/config.default.js) for more detail.
 所以，必须开启 `sticky` 模式：
 
 ```js
-startCluster(
+startCluster({
   sticky: true,
   ...
-);
+});
 ```
 
 ## 用法
