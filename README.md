@@ -192,6 +192,25 @@ module.exports = app => {
 };
 ```
 
+## Cluster
+
+If your Socket.IO service is powered by mutil server, you must think about cluster solution.It can't work without cluster like broadcast ,rooms and so on.
+
+It's very easy to implement sharing source and event dispatch with with [socket.io-redis](https://github.com/socketio/socket.io-redis) built in.
+
+config at `config/config.${env}.js` ：
+
+```js
+exports.io = {
+  redis: {
+    host: { redis server host },
+    port: { redis server prot }
+  }
+};
+```
+
+Application will try to connect the redis server when booting. 
+
 ## Questions & Suggestions
 
 Please open an issue [here](https://github.com/eggjs/egg/issues).

@@ -191,6 +191,27 @@ module.exports = app => {
 };
 ```
 
+## 集群
+
+如果你的 Socket.IO 服务由多台服务器提供，那么必须思考集群方案。比如，广播，房间等功能，必须依赖集群方案。
+
+egg-socket.io 集成了 [socket.io-redis](https://github.com/socketio/socket.io-redis) ，能够非常方便的实现集群共享资源与事件分发。
+
+配置起来也很简单：
+
+只需要在 `config/config.${env}.js` 配置 ：
+
+```js
+exports.io = {
+  redis: {
+    host: { redis server host },
+    port: { redis server prot }
+  }
+};
+```
+
+egg 服务在启动时，会尝试连接 redis 服务，成功后，应用会顺利启动。
+
 ## 问题 & 建议
 
 请访问 [here](https://github.com/eggjs/egg/issues).
