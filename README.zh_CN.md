@@ -61,6 +61,8 @@ see [config/config.default.js](config/config.default.js) for more detail.
 
 ## 部署
 
+### Node 配置
+
 由于 Socket.IO 的设计缘故，多进程的 Socket.IO 服务必须在 `sticky` 模式下才能工作，否则会抛出握手异常。
 
 所以，必须开启 `sticky` 模式：
@@ -70,6 +72,19 @@ startCluster({
   sticky: true,
   ...
 });
+```
+### Nginx 配置
+
+如果你使用了 nginx 做代理转发：
+
+```
+location / {
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+    proxy_pass   http://127.0.0.1:{ your node server port };
+}
 ```
 
 ## 用法
