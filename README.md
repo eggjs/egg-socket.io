@@ -61,6 +61,8 @@ see [config/config.default.js](config/config.default.js) for more detail.
 
 ## Deployment
 
+### Node Conf
+
 Because of socket.io's design, the multi process socket.io server must work at `sticky` mode.
 
 So, you must start server with `sticky` set to true, otherwise it will cause handshake exception.
@@ -70,6 +72,20 @@ startCluster({
   sticky: true,
   ...
 });
+```
+
+### Nginx Conf
+
+if you use a nginx proxy server:
+
+```
+location / {
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+    proxy_pass   http://127.0.0.1:{ your node server port };
+}
 ```
 
 ## Usage
