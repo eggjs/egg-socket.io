@@ -5,6 +5,8 @@ const assert = require('assert');
 const request = require('supertest');
 const fs = require('fs');
 const pedding = require('pedding');
+const path = require('path');
+const rimraf = require('rimraf');
 const ioc = require('socket.io-client');
 
 let basePort = 17001;
@@ -17,7 +19,13 @@ function client(nsp = '', opts = {}) {
   return ioc(url, opts);
 }
 
+const mockApps = fs.readdirSync(path.join(__dirname, 'fixtures/apps'));
+
 describe('test/socketio.test.js', () => {
+  before(() => {
+    mockApps.forEach(clean);
+  });
+
   afterEach(() => {
     mm.restore();
     basePort++;
@@ -167,4 +175,83 @@ describe('test/socketio.test.js', () => {
       });
     });
   });
+
+  describe('error', () => {
+    it('Controller error', done => {
+      const appName = 'socket.io-controller-error';
+      const app = mm.cluster({
+        baseDir: `apps/${appName}`,
+        workers: 2,
+        sticky: true,
+      });
+
+      app.ready().then(() => {
+        const socket = client('', { port: basePort });
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('connect', () => socket.emit('chat', ''));
+        setTimeout(() => {
+          const errorLog = getErrorLogContent(appName);
+          assert(contains(errorLog, 'Controller Error!') === 1);
+          done();
+        }, 500);
+      });
+    });
+
+    it('connectionMiddleware error', done => {
+      const appName = 'socket.io-connectionMiddleware-error';
+      const app = mm.cluster({
+        baseDir: `apps/${appName}`,
+        workers: 2,
+        sticky: true,
+      });
+
+      app.ready().then(() => {
+        const socket = client('', { port: basePort });
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('connect', () => socket.emit('chat', ''));
+        setTimeout(() => {
+          const errorLog = getErrorLogContent(appName);
+          assert(contains(errorLog, 'connectionMiddleware Error!') === 1);
+          done();
+        }, 500);
+      });
+    });
+
+    it('packetMiddleware error', done => {
+      const appName = 'socket.io-packetMiddleware-error';
+      const app = mm.cluster({
+        baseDir: `apps/${appName}`,
+        workers: 2,
+        sticky: true,
+      });
+
+      app.ready().then(() => {
+        const socket = client('', { port: basePort });
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('connect', () => socket.emit('chat', ''));
+        setTimeout(() => {
+          const errorLog = getErrorLogContent(appName);
+          assert(contains(errorLog, 'packetMiddleware Error!') === 1);
+          done();
+        }, 500);
+      });
+    });
+  });
 });
+
+function clean(name) {
+  const logPath = path.join(__dirname, 'fixtures/apps', name, 'logs');
+  const runPath = path.join(__dirname, 'fixtures/apps', name, 'run');
+
+  rimraf.sync(logPath);
+  rimraf.sync(runPath);
+}
+
+function getErrorLogContent(name) {
+  const logPath = path.join(__dirname, 'fixtures/apps', name, 'logs', name, 'common-error.log');
+  return fs.readFileSync(logPath, 'utf8');
+}
+
+function contains(content, match) {
+  return content.split('\n').filter(line => line.indexOf(match) >= 0).length;
+}

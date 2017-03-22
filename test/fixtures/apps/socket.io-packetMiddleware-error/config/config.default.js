@@ -3,9 +3,9 @@
 exports.io = {
   namespace: {
     '/': {
-      packetMiddleware: ['m'],
+      packetMiddleware: ['p'],
     },
   },
-}
+};
 
 exports.keys = '123';

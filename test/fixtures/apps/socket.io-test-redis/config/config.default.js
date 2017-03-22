@@ -6,3 +6,5 @@ exports.io = {
     port: 6379,
   },
 };
+
+exports.keys = '123';

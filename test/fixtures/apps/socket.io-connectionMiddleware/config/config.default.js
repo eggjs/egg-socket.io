@@ -15,5 +15,7 @@ module.exports = appConfig => {
 
   config.disconnectFile = path.join(appConfig.baseDir, 'disconnectFile');
 
+  config.keys = '123';
+
   return config;
 };
