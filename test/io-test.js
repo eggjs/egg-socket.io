@@ -22,7 +22,7 @@ function client(nsp = '', opts = {}) {
 const mockApps = fs.readdirSync(path.join(__dirname, 'fixtures/apps'));
 
 describe('test/socketio.test.js', () => {
-  beforeEach(() => {
+  before(() => {
     mockApps.forEach(clean);
   });
 
