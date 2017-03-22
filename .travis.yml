@@ -10,4 +10,4 @@ script:
 after_script:
   - npminstall codecov && codecov
 services:
-  - redis
+  - redis-server

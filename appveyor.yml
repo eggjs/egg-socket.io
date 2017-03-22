@@ -4,7 +4,6 @@ environment:
     - nodejs_version: '7'
 
 install:
-  # Install the Redis
   - nuget install redis-64 -excludeversion
   - redis-64\tools\redis-server.exe --service-install
   - redis-64\tools\redis-server.exe --service-start
@@ -18,3 +17,5 @@ test_script:
   - npm run ci
 
 build: off
+services:
+  - redis-server

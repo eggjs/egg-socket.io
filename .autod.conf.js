@@ -22,5 +22,8 @@ module.exports = {
     './docs',
     './coverage',
   ],
+  semver: [
+    'koa-compose@2'
+  ],
   registry: 'https://r.cnpmjs.org',
 };
