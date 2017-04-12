@@ -44,6 +44,7 @@ exports.io = {
 
 ```js
 exports.io = {
+  init: { } // passed to engine.io
   namespace: {
     '/': {
       connectionMiddleware: [],
@@ -56,6 +57,18 @@ exports.io = {
   }
 };
 ```
+
+#### uws
+
+如果你想用 [uws](https://github.com/uWebSockets/uWebSockets) 替换掉默认的 `us` , 可以这样配置:
+
+```js
+exports.io = {
+  init: { wsEngine: 'uws' },
+};
+```
+
+更多配置 init 配置参考： [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1) .
 
 see [config/config.default.js](config/config.default.js) for more detail.
 

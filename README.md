@@ -44,7 +44,7 @@ Configure Socket.IO in `${app_root}/config/config.default.js`:
 
 ```js
 exports.io = {
-  init: { } // passed to engine.io, read more at [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1)
+  init: { } // passed to engine.io
   namespace: {
     '/': {
       connectionMiddleware: [],
@@ -67,6 +67,8 @@ exports.io = {
   init: { wsEngine: 'uws' },
 };
 ```
+
+read more about init config at: [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1) .
 
 see [config/config.default.js](config/config.default.js) for more detail.
 
