@@ -44,6 +44,7 @@ Configure Socket.IO in `${app_root}/config/config.default.js`:
 
 ```js
 exports.io = {
+  init: { } // passed to engine.io, read more at [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1)
   namespace: {
     '/': {
       connectionMiddleware: [],
@@ -54,6 +55,16 @@ exports.io = {
     host: '127.0.0.1',
     port: 6379
   }
+};
+```
+
+#### uws
+
+If you want to replace the default `us` with [uws](https://github.com/uWebSockets/uWebSockets), you can config like this:
+
+```js
+exports.io = {
+  init: { wsEngine: 'uws' },
 };
 ```
 

@@ -6,6 +6,7 @@
  * @property {String} SOME_KEY - some description todo
  */
 exports.io = {
+  init: {},
   namespace: {
     '/': {
       connectionMiddleware: [],
