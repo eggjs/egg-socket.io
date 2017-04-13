@@ -68,7 +68,7 @@ exports.io = {
 };
 ```
 
-更多配置 init 配置参考： [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1) .
+更多 init 配置参考： [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1) .
 
 see [config/config.default.js](config/config.default.js) for more detail.
 
