@@ -24,16 +24,17 @@
   },
   "devDependencies": {
     "autod": "^2.8.0",
-    "egg": "^1.0.0",
-    "egg-bin": "^3.1.0",
+    "egg": "^1.1.0",
+    "egg-bin": "^3.2.1",
     "egg-ci": "^1.6.0",
     "egg-mock": "^3.2.0",
-    "eslint": "^3.18.0",
+    "eslint": "^3.19.0",
     "eslint-config-egg": "^3.2.0",
     "pedding": "^1.1.0",
     "rimraf": "^2.6.1",
     "socket.io-client": "^1.7.3",
     "supertest": "^3.0.0",
+    "uws": "^0.14.1",
     "webstorm-disable-index": "^1.1.2"
   },
   "engines": {

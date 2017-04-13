@@ -65,6 +65,23 @@ describe('test/socketio.test.js', () => {
     });
   });
 
+  it('should works ok with uws', done => {
+    const app = mm.cluster({
+      baseDir: 'apps/socket.io-uws',
+      workers: 2,
+      sticky: true,
+    });
+    app.ready().then(() => {
+      const socket = client('', { port: basePort });
+      socket.on('connect', () => socket.emit('chat', ''));
+      socket.on('disconnect', () => app.close().then(done, done));
+      socket.on('res', msg => {
+        assert(msg === 'hello');
+        socket.close();
+      });
+    });
+  });
+
   it('should redis adapter works ok', done => {
     const app = mm.cluster({
       baseDir: 'apps/socket.io-test-redis',
