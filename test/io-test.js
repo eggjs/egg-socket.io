@@ -254,6 +254,25 @@ describe('test/socketio.test.js', () => {
       });
     });
   });
+
+  describe('namespace', () => {
+    it('should namespace works ok', done => {
+      const app = mm.cluster({
+        baseDir: 'apps/socket.io-ns',
+        workers: 1,
+        sticky: false,
+      });
+      app.ready().then(() => {
+        const socket = client('/nstest', { port: basePort });
+        socket.on('connect', () => socket.emit('chat', ''));
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('res', msg => {
+          assert(msg === 'hello');
+          socket.close();
+        });
+      });
+    });
+  });
 });
 
 function clean(name) {
