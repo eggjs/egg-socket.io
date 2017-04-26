@@ -130,12 +130,59 @@ describe('test/socketio.test.js', () => {
       });
       const done = pedding(_done, 2);
       app.ready().then(() => {
+
         const socket = client('', { port: basePort });
         socket.on('disconnect', () => app.close().then(done, done));
         socket.on('packet1', () => done());
         socket.on('packet2', () => socket.close());
         socket.on('connect', () => socket.emit('a', ''));
       });
+    });
+
+    it('manual register  a event should  be release after packetMiddleware', _done => {
+
+      const app = mm.cluster({
+        baseDir: 'apps/socket.io-packetMiddleware',
+        workers: 2,
+        sticky: true,
+      });
+      const done = pedding(_done, 2);
+      app.ready().then(() => {
+
+        const socket = client('', { port: basePort });
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('connect', () => {
+          socket.emit('anEventNotRegisterInTheRouter', '1');
+        });
+        socket.on('thisMessageMeansRelease', () => {
+          // testunit will failure(timeout) when not get this message
+          done();
+          socket.close();
+        });
+      });
+    });
+
+    it('manual register  an event message and register an other event by app.io.route must be ok too', _done => {
+      const app = mm.cluster({
+        baseDir: 'apps/socket.io-packetMiddleware',
+        workers: 2,
+        sticky: true,
+      });
+      const done = pedding(_done, 3);
+      app.ready().then(() => {
+        const socket = client('', { port: basePort });
+        socket.on('connect', () => {
+          socket.emit('chat', '1');
+        });
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('chat', () => done());
+        // when the server finished event emit
+        socket.on('thisMessageMeansRelease', () => {
+          socket.close();
+          done();
+        });
+      });
+
     });
   });
 
