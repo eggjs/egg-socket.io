@@ -1,4 +1,10 @@
 
+1.2.1 / 2017-04-27
+==================
+
+  * fix:middleware sometimes not release(#803)
+  * test:add ns test case (#12)
+
 1.2.0 / 2017-04-13
 ==================
 
