@@ -3,7 +3,8 @@
 exports.io = {
   namespace: {
     '/': {
-      packetMiddleware: ['m'],
+      connectionMiddleware: ['c'],
+      packetMiddleware: ['m','r'],
     },
   },
 }
