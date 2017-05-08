@@ -255,7 +255,7 @@ describe('test/socketio.test.js', () => {
         socket.on('connect', () => socket.emit('chat', ''));
         setTimeout(() => {
           const errorLog = getErrorLogContent(appName);
-          assert(contains(errorLog, 'Controller Error!') === 1);
+          assert(contains(errorLog, 'Controller Error!') === 2);
           done();
         }, 500);
       });
