@@ -1,4 +1,9 @@
 
+1.2.2 / 2017-05-09
+==================
+
+  * fix:when a channel has error must throw the exception.#865 (#14)
+
 1.2.1 / 2017-04-27
 ==================
 
