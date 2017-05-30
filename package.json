@@ -14,27 +14,27 @@
   ],
   "dependencies": {
     "co": "^4.6.0",
-    "debug": "^2.6.3",
+    "debug": "^2.6.8",
     "delegates": "^1.0.0",
     "is-type-of": "^1.0.0",
     "koa-compose": "^2.5.1",
-    "socket.io": "^1.7.3",
-    "socket.io-redis": "^4.0.0"
+    "socket.io": "^2.0.1",
+    "socket.io-redis": "^5.0.1"
   },
   "devDependencies": {
     "autod": "^2.8.0",
-    "egg": "^1.1.0",
-    "egg-bin": "^3.2.1",
+    "egg": "^1.4.0",
+    "egg-bin": "^3.4.0",
     "egg-ci": "^1.6.0",
-    "egg-mock": "^3.2.0",
+    "egg-mock": "^3.7.0",
     "eslint": "^3.19.0",
-    "eslint-config-egg": "^3.2.0",
+    "eslint-config-egg": "^4.2.0",
     "pedding": "^1.1.0",
     "rimraf": "^2.6.1",
-    "socket.io-client": "^1.7.3",
+    "socket.io-client": "^2.0.1",
     "supertest": "^3.0.0",
     "uws": "^0.14.1",
-    "webstorm-disable-index": "^1.1.2"
+    "webstorm-disable-index": "^1.2.0"
   },
   "engines": {
     "node": ">=6.0.0"
