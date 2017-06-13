@@ -23,7 +23,8 @@ module.exports = {
     './coverage',
   ],
   semver: [
-    'koa-compose@2'
+    'eslint@3',
+    'koa-compose@2',
   ],
   registry: 'https://r.cnpmjs.org',
 };
