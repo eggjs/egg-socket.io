@@ -12,3 +12,5 @@ exports.io = {
     },
   },
 };
+
+exports.keys = '123';
