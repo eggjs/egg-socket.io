@@ -9,6 +9,6 @@ module.exports = app => {
   return function* (next) {
     this.emit('connected', app.config.disconnectFile);
     yield* next;
-    fs.writeFile(app.config.disconnectFile, 'true');
+    fs.writeFileSync(app.config.disconnectFile, 'true');
   };
 };

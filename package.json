@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "co": "^4.6.0",
-    "debug": "^2.6.8",
+    "debug": "^3.0.0",
     "delegates": "^1.0.0",
     "is-type-of": "^1.0.0",
     "koa-compose": "^2.5.1",
@@ -24,16 +24,16 @@
   "devDependencies": {
     "autod": "^2.8.0",
     "egg": "^1.4.0",
-    "egg-bin": "^3.4.2",
+    "egg-bin": "^4.1.0",
     "egg-ci": "^1.7.0",
     "egg-mock": "^3.7.2",
-    "eslint": "^3.19.0",
-    "eslint-config-egg": "^4.2.1",
+    "eslint": "^4.4.1",
+    "eslint-config-egg": "^5.0.0",
     "pedding": "^1.1.0",
     "rimraf": "^2.6.1",
     "socket.io-client": "^2.0.3",
     "supertest": "^3.0.0",
-    "uws": "^0.14.1",
+    "uws": "^8.14.1",
     "webstorm-disable-index": "^1.2.0"
   },
   "engines": {

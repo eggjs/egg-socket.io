@@ -14,6 +14,6 @@ module.exports = app => {
 
     yield* next;
     
-    fs.writeFile(app.config.disconnectFile, 'true');
+    fs.writeFileSync(app.config.disconnectFile, 'true');
   };
 };

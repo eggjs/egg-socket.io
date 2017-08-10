@@ -31,6 +31,23 @@ describe('test/socketio.test.js', () => {
     basePort++;
   });
 
+  it('should async/await works ok', done => {
+    const app = mm.cluster({
+      baseDir: 'apps/socket.io-async',
+      workers: 1,
+      sticky: false,
+    });
+    app.ready().then(() => {
+      const socket = client('', { port: basePort });
+      socket.on('connect', () => socket.emit('chat', ''));
+      socket.on('disconnect', () => app.close().then(done, done));
+      socket.on('res', msg => {
+        assert(msg === 'hello');
+        socket.close();
+      });
+    });
+  });
+
   it('should single worker works ok', done => {
     const app = mm.cluster({
       baseDir: 'apps/socket.io-test',
@@ -139,7 +156,7 @@ describe('test/socketio.test.js', () => {
       });
     });
 
-    it('manual register  a event should  be release after packetMiddleware', _done => {
+    it('manual register a event should  be release after packetMiddleware', _done => {
 
       const app = mm.cluster({
         baseDir: 'apps/socket.io-packetMiddleware',
@@ -162,7 +179,7 @@ describe('test/socketio.test.js', () => {
       });
     });
 
-    it('manual register  an event message and register an other event by app.io.route must be ok too', _done => {
+    it('manual register an event message and register an other event by app.io.route must be ok too', _done => {
       const app = mm.cluster({
         baseDir: 'apps/socket.io-packetMiddleware',
         workers: 2,
