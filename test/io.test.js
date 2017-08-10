@@ -32,7 +32,7 @@ describe('test/socketio.test.js', () => {
     basePort++;
   });
 
-  if(semver.gt(process.version.substring(1), '7.6.0')) {
+  if (semver.gt(process.version.substring(1), '7.6.0')) {
     it('should async/await works ok', done => {
       const app = mm.cluster({
         baseDir: 'apps/socket.io-async',
