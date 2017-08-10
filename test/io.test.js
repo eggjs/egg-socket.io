@@ -8,6 +8,7 @@ const pedding = require('pedding');
 const path = require('path');
 const rimraf = require('rimraf');
 const ioc = require('socket.io-client');
+const semver = require('semver');
 
 let basePort = 17001;
 
@@ -31,22 +32,24 @@ describe('test/socketio.test.js', () => {
     basePort++;
   });
 
-  it('should async/await works ok', done => {
-    const app = mm.cluster({
-      baseDir: 'apps/socket.io-async',
-      workers: 1,
-      sticky: false,
-    });
-    app.ready().then(() => {
-      const socket = client('', { port: basePort });
-      socket.on('connect', () => socket.emit('chat', ''));
-      socket.on('disconnect', () => app.close().then(done, done));
-      socket.on('res', msg => {
-        assert(msg === 'hello');
-        socket.close();
+  if(semver.gt(process.version.substring(1), '7.6.0')) {
+    it('should async/await works ok', done => {
+      const app = mm.cluster({
+        baseDir: 'apps/socket.io-async',
+        workers: 1,
+        sticky: false,
+      });
+      app.ready().then(() => {
+        const socket = client('', { port: basePort });
+        socket.on('connect', () => socket.emit('chat', ''));
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('res', msg => {
+          assert(msg === 'hello');
+          socket.close();
+        });
       });
     });
-  });
+  }
 
   it('should single worker works ok', done => {
     const app = mm.cluster({
