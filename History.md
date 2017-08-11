@@ -1,4 +1,10 @@
 
+2.1.0 / 2017-08-11
+==================
+
+  * feat: add async support for controller. (#20)
+  * fix: add the egg required keys config (#19)
+
 2.0.2 / 2017-06-13
 ==================
 
