@@ -197,6 +197,19 @@ module.exports = app => {
 };
 ```
 
+You can also use `async/await` in controller:
+
+`app/io/controller/chat.js`
+```js
+module.exports = app => {
+  return async function() {
+    const message = this.args[0];
+    console.log(message);
+    await this.socket.emit('res', `Hi! I've got your message: ${message}`);
+  };
+};
+```
+
 next, config the router at `app/router.js`
 ```js
 module.exports = app => {
