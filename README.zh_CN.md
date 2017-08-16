@@ -80,12 +80,21 @@ see [config/config.default.js](config/config.default.js) for more detail.
 
 所以，必须开启 `sticky` 模式：
 
+```bash
+$ # 修改 package.json 对应的 npm scripts
+$ egg-bin dev --sticky
+$ egg-scripts start --sticky
+```
+
+这两个脚本都会使框架启动 cluster 时使用 `sticky` 模式
+
 ```js
 startCluster({
   sticky: true,
   ...
 });
 ```
+
 ### Nginx 配置
 
 如果你使用了 nginx 做代理转发：
@@ -242,6 +251,6 @@ egg 服务在启动时，会尝试连接 redis 服务，成功后，应用会顺
 
 请访问 [here](https://github.com/eggjs/egg/issues).
 
-## 
+##
 
 [MIT](LICENSE)
