@@ -78,7 +78,15 @@ see [config/config.default.js](config/config.default.js) for more detail.
 
 Because of socket.io's design, the multi process socket.io server must work at `sticky` mode.
 
-So, you must start server with `sticky` set to true, otherwise it will cause handshake exception.
+So, you must start cluster server with `sticky` set to true, otherwise it will cause handshake exception.
+
+```bash
+$ # modify your package.json - npm scripts
+$ egg-bin dev --sticky
+$ egg-scripts start --sticky
+```
+
+which will start egg cluster with:
 
 ```js
 startCluster({
@@ -86,6 +94,7 @@ startCluster({
   ...
 });
 ```
+
 
 ### Nginx Conf
 
@@ -235,7 +244,7 @@ exports.io = {
 };
 ```
 
-Application will try to connect the redis server when booting. 
+Application will try to connect the redis server when booting.
 
 ## Questions & Suggestions
 
