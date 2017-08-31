@@ -239,7 +239,9 @@ config at `config/config.${env}.js` ：
 exports.io = {
   redis: {
     host: { redis server host },
-    port: { redis server prot }
+    port: { redis server prot },
+    auth_pass: { redis server password },
+    db: 0,
   }
 };
 ```
