@@ -44,7 +44,7 @@ Configure Socket.IO in `${app_root}/config/config.default.js`:
 
 ```js
 exports.io = {
-  init: { } // passed to engine.io
+  init: { }, // passed to engine.io
   namespace: {
     '/': {
       connectionMiddleware: [],
