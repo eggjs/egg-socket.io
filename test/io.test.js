@@ -41,15 +41,44 @@ describe('test/socketio.test.js', () => {
       });
       app.ready().then(() => {
         const socket = client('', { port: basePort });
-        socket.on('connect', () => socket.emit('chat', ''));
+        let success = 0;
+        socket.on('connect', () => {
+          socket.emit('chat-async-class', '');
+          socket.emit('chat-async-object', '');
+        });
         socket.on('disconnect', () => app.close().then(done, done));
         socket.on('res', msg => {
           assert(msg === 'hello');
-          socket.close();
+          if (++success === 2) {
+            socket.close();
+          }
         });
       });
     });
   }
+
+  it('should controller class works ok', done => {
+    const app = mm.cluster({
+      baseDir: 'apps/socket.io-controller-class',
+      workers: 1,
+      sticky: false,
+    });
+    app.ready().then(() => {
+      const socket = client('', { port: basePort });
+      let success = 0;
+      socket.on('connect', () => {
+        socket.emit('chat', '');
+        socket.emit('chat-generator', '');
+      });
+      socket.on('disconnect', () => app.close().then(done, done));
+      socket.on('res', msg => {
+        assert(msg === 'hello');
+        if (++success === 2) {
+          socket.close();
+        }
+      });
+    });
+  });
 
   it('should single worker works ok', done => {
     const app = mm.cluster({

@@ -210,12 +210,21 @@ You can also use `async/await` in controller:
 
 `app/io/controller/chat.js`
 ```js
+// defined as class methods
 module.exports = app => {
-  return async function() {
-    const message = this.args[0];
-    console.log(message);
-    await this.socket.emit('res', `Hi! I've got your message: ${message}`);
-  };
+  class Controller extends app.Controller {
+    async ping() {
+      const message = this.ctx.args[0];
+      await this.ctx.socket.emit('res', `Hi! I've got your message: ${message}`);
+    }
+  }
+  return Controller
+};
+
+// or normal functions
+exports.ping = async function() {
+  const message = this.args[0];
+  await this.socket.emit('res', `Hi! I've got your message: ${message}`);
 };
 ```
 
@@ -223,7 +232,7 @@ next, config the router at `app/router.js`
 ```js
 module.exports = app => {
   // or app.io.of('/')
-  app.io.route('chat', app.io.controllers.chat);
+  app.io.route('chat', app.io.controllers.chat.ping);
 };
 ```
 
