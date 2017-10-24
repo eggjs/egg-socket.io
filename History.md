@@ -1,4 +1,14 @@
 
+3.0.0 / 2017-10-24
+==================
+
+  * feat: [BREAKING_CHANGE] support class based async controllers.Use a single async function as module's default export won't be supported.(#26)
+  * docs: fix typo (#25)
+  * docs: redis config zh_CN (#24)
+  * docs: redis config (#23)
+  * docs: npm scripts --sticky (#22)
+  * docs: README for async await usage (#21)
+
 2.1.0 / 2017-08-11
 ==================
 
