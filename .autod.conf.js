@@ -21,10 +21,9 @@ module.exports = {
     './test/fixtures',
     './docs',
     './coverage',
+    './.idea',
+    './example'
   ],
-  semver: [
-    'eslint@3',
-    'koa-compose@2',
-  ],
+  semver: [],
   registry: 'https://r.cnpmjs.org',
 };
