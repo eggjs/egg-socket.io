@@ -1,11 +1,11 @@
 'use strict';
 
 module.exports = () => {
-  return function* (next) {
-    console.log(this.packet);
-    const say = yield this.service.user.say();
-    this.socket.emit('res', 'packet!' + say);
-    yield* next;
+  return async (ctx, next) => {
+    console.log(ctx.packet);
+    const say = await ctx.service.user.say();
+    ctx.socket.emit('res', 'packet!' + say);
+    await next();
     console.log('packet response!');
   };
 };

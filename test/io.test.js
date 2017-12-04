@@ -150,12 +150,19 @@ describe('test/socketio.test.js', () => {
 
   describe('connectionMiddleware', () => {
     it('should connectionMiddleware works ok when connection established & disconnected', done => {
+      test('apps/socket.io-connectionMiddleware', done);
+    });
+
+    it('should connectionMiddleware works ok when connection established & disconnected', done => {
+      test('apps/socket.io-connectionMiddleware-async', done);
+    });
+
+    function test(appConfig, done) {
       const app = mm.cluster({
-        baseDir: 'apps/socket.io-connectionMiddleware',
+        baseDir: appConfig,
         workers: 2,
         sticky: true,
       });
-
       app.ready().then(() => {
         const socket = client('', { port: basePort });
         socket.on('connected', disconnectFile => {
@@ -167,29 +174,35 @@ describe('test/socketio.test.js', () => {
           }, 500);
         });
       });
-    });
+    }
   });
 
   describe('packetMiddleware', () => {
     it('should packetMiddleware works ok', _done => {
+      testPacketMiddleware('socket.io-packetMiddleware', _done);
+    });
+
+    it('should packetMiddleware async works ok', _done => {
+      testPacketMiddleware('socket.io-packetMiddleware-async', _done);
+    });
+
+    function testPacketMiddleware(appName, _done) {
       const app = mm.cluster({
-        baseDir: 'apps/socket.io-packetMiddleware',
+        baseDir: `apps/${appName}`,
         workers: 2,
         sticky: true,
       });
       const done = pedding(_done, 2);
       app.ready().then(() => {
-
         const socket = client('', { port: basePort });
         socket.on('disconnect', () => app.close().then(done, done));
         socket.on('packet1', () => done());
         socket.on('packet2', () => socket.close());
         socket.on('connect', () => socket.emit('a', ''));
       });
-    });
+    }
 
     it('manual register a event should  be release after packetMiddleware', _done => {
-
       const app = mm.cluster({
         baseDir: 'apps/socket.io-packetMiddleware',
         workers: 2,
@@ -291,7 +304,14 @@ describe('test/socketio.test.js', () => {
 
   describe('error', () => {
     it('Controller error', done => {
-      const appName = 'socket.io-controller-error';
+      testControllerError('socket.io-controller-error', done);
+    });
+
+    it('Controller error async', done => {
+      testControllerError('socket.io-controller-error-async', done);
+    });
+
+    function testControllerError(appName, done) {
       const app = mm.cluster({
         baseDir: `apps/${appName}`,
         workers: 2,
@@ -308,10 +328,17 @@ describe('test/socketio.test.js', () => {
           done();
         }, 500);
       });
-    });
+    }
 
     it('connectionMiddleware error', done => {
-      const appName = 'socket.io-connectionMiddleware-error';
+      testConnectionMiddlewareError('socket.io-connectionMiddleware-error', done);
+    });
+
+    it('connectionMiddleware error async', done => {
+      testConnectionMiddlewareError('socket.io-connectionMiddleware-error-async', done);
+    });
+
+    function testConnectionMiddlewareError(appName, done) {
       const app = mm.cluster({
         baseDir: `apps/${appName}`,
         workers: 2,
@@ -328,10 +355,17 @@ describe('test/socketio.test.js', () => {
           done();
         }, 500);
       });
-    });
+    }
 
     it('packetMiddleware error', done => {
-      const appName = 'socket.io-packetMiddleware-error';
+      testPacketMiddlewareError('socket.io-packetMiddleware-error', done);
+    });
+
+    it('packetMiddleware error async', done => {
+      testPacketMiddlewareError('socket.io-packetMiddleware-error-async', done);
+    });
+
+    function testPacketMiddlewareError(appName, done) {
       const app = mm.cluster({
         baseDir: `apps/${appName}`,
         workers: 2,
@@ -348,7 +382,7 @@ describe('test/socketio.test.js', () => {
           done();
         }, 500);
       });
-    });
+    }
   });
 
   describe('namespace', () => {

@@ -2,7 +2,7 @@
 
 module.exports = app => {
   class User extends app.Service {
-    * say() {
+    async say() {
       return 'Helle Man!';
     }
   }

@@ -13,26 +13,25 @@
     "websocket"
   ],
   "dependencies": {
-    "co": "^4.6.0",
-    "debug": "^3.0.0",
+    "debug": "^3.1.0",
     "delegates": "^1.0.0",
-    "is-type-of": "^1.0.0",
-    "koa-compose": "^2.5.1",
-    "socket.io": "^2.0.3",
-    "socket.io-redis": "^5.1.0"
+    "is-type-of": "^1.2.0",
+    "koa-compose": "^4.0.0",
+    "socket.io": "^2.0.4",
+    "socket.io-redis": "^5.2.0"
   },
   "devDependencies": {
-    "autod": "^2.8.0",
-    "egg": "^1.4.0",
-    "egg-bin": "^4.1.0",
-    "egg-ci": "^1.7.0",
-    "egg-mock": "^3.7.2",
-    "eslint": "^4.4.1",
-    "eslint-config-egg": "^5.0.0",
+    "autod": "^3.0.1",
+    "egg": "^2.0.0",
+    "egg-bin": "^4.3.6",
+    "egg-ci": "^1.8.0",
+    "egg-mock": "^3.13.1",
+    "eslint": "^4.12.1",
+    "eslint-config-egg": "^5.1.1",
     "pedding": "^1.1.0",
-    "rimraf": "^2.6.1",
+    "rimraf": "^2.6.2",
     "semver": "^5.4.1",
-    "socket.io-client": "^2.0.3",
+    "socket.io-client": "^2.0.4",
     "supertest": "^3.0.0",
     "uws": "^8.14.1",
     "webstorm-disable-index": "^1.2.0"
@@ -55,7 +54,7 @@
     "app.js"
   ],
   "ci": {
-    "version": "6, 7, 8",
+    "version": "8, 9",
     "license": true,
     "services": "redis-server"
   },

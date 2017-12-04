@@ -28,6 +28,10 @@ egg 框架的 socket.io 插件
 $ npm i egg-socket.io --save
 ```
 
+## 环境要求
+
+- Node.js >= 8.0
+
 ## 配置
 
 通过 `config/plugin.js` 配置启动 Socket.IO 插件:
@@ -137,9 +141,9 @@ middleware are functions which every connection or packet will be processed by.
 `app/io/middleware/auth.js`
 ```js
 module.exports = app => {
-    return function* (next) {
-        this.socket.emit('res', 'connected!');
-        yield* next;
+    return async (ctx, next) => {
+        ctx.socket.emit('res', 'connected!');
+        await next();
         // execute when disconnect.
         console.log('disconnection!');
     };
@@ -166,10 +170,10 @@ exports.io = {
 `app/io/middleware/filter.js`
 ```js
 module.exports = app => {
-    return function* (next) {
-        this.socket.emit('res', 'packet received!');
+    return async (ctx, next) {
+        ctx.socket.emit('res', 'packet received!');
         console.log('packet:', this.packet);
-        yield* next;
+        await next();
     };
 };
 ```
@@ -197,20 +201,6 @@ example:
 `app/io/controller/chat.js`
 ```js
 module.exports = app => {
-  return function* () {
-    const message = this.args[0];
-    console.log(message);
-    this.socket.emit('res', `Hi! I've got your message: ${message}`);
-  };
-};
-```
-
-你也可以在控制器中使用 `async/await` :
-
-`app/io/controller/chat.js`
-```js
-// defined as class methods
-module.exports = app => {
   class Controller extends app.Controller {
     async ping() {
       const message = this.ctx.args[0];
@@ -220,7 +210,7 @@ module.exports = app => {
   return Controller
 };
 
-// or normal functions
+// or async functions
 exports.ping = async function() {
   const message = this.args[0];
   await this.socket.emit('res', `Hi! I've got your message: ${message}`);
@@ -231,7 +221,7 @@ exports.ping = async function() {
 ```js
 module.exports = app => {
   // or app.io.of('/')
-  app.io.route('chat', app.io.controllers.chat.ping);
+  app.io.route('chat', app.io.controller.chat.ping);
 };
 ```
 
