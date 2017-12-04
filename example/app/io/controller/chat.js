@@ -2,10 +2,10 @@
 
 module.exports = app => {
   class Controller extends app.Controller {
-    * index() {
+    async index() {
       const message = this.ctx.args[0];
       console.log('chat :', message + ' : ' + process.pid);
-      const say = yield this.service.user.say();
+      const say = await this.ctx.service.user.say();
       this.ctx.socket.emit('res', say);
     }
   }
