@@ -171,7 +171,7 @@ pay attention to the namespace, the config will only work for a specific namespa
 `app/io/middleware/filter.js`
 ```js
 module.exports = app => {
-    return async (ctx, next) {
+    return async (ctx, next) => {
         ctx.socket.emit('res', 'packet received!');
         console.log('packet:', this.packet);
         await next();
