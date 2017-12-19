@@ -320,12 +320,19 @@ describe('test/socketio.test.js', () => {
 
       app.ready().then(() => {
         const socket = client('', { port: basePort });
-        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('disconnect', () => {
+          app.close().then(() => {
+            const errorLog = getErrorLogContent(appName);
+            assert(contains(errorLog, 'Controller Disconnect!') === 1);
+            assert(contains(errorLog, 'Controller Disconnecting!') === 1);
+            done();
+          }).catch(done);
+        });
         socket.on('connect', () => socket.emit('chat', ''));
         setTimeout(() => {
           const errorLog = getErrorLogContent(appName);
           assert(contains(errorLog, 'Controller Error!') === 1);
-          done();
+          socket.close();
         }, 500);
       });
     }
