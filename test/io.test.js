@@ -334,7 +334,7 @@ describe('test/socketio.test.js', () => {
                   } catch (e) {
                     reject(e);
                   }
-                }, 1000);
+                }, 10000);
               });
             })
             .then(done, done);
