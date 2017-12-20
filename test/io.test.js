@@ -321,23 +321,25 @@ describe('test/socketio.test.js', () => {
       app.ready().then(() => {
         const socket = client('', { port: basePort });
         socket.on('disconnect', () => {
-          app.close()
-            .then(() => {
-              return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  try {
-                    const errorLog = getErrorLogContent(appName);
-                    console.log('errorLog xxx:', errorLog);
-                    assert(contains(errorLog, 'Controller Disconnect!') === 1);
-                    assert(contains(errorLog, 'Controller Disconnecting!') === 1);
-                    resolve();
-                  } catch (e) {
-                    reject(e);
-                  }
-                }, 10000);
-              });
-            })
-            .then(done, done);
+          setTimeout(() => {
+            app.close()
+              .then(() => {
+                return new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    try {
+                      const errorLog = getErrorLogContent(appName);
+                      console.log('errorLog xxx:', errorLog);
+                      assert(contains(errorLog, 'Controller Disconnect!') === 1);
+                      assert(contains(errorLog, 'Controller Disconnecting!') === 1);
+                      resolve();
+                    } catch (e) {
+                      reject(e);
+                    }
+                  }, 1000);
+                });
+              })
+              .then(done, done);
+          }, 2000);
         });
         socket.on('connect', () => socket.emit('chat', ''));
         setTimeout(() => {
