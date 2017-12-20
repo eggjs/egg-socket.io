@@ -326,7 +326,7 @@ describe('test/socketio.test.js', () => {
             .then(() => sleep(500))
             .then(() => {
               const errorLog = getErrorLogContent(appName);
-              console.log('errorLog xxx:', errorLog);
+              // console.log('errorLog xxx:', errorLog);
               assert(contains(errorLog, 'Controller Disconnect!') === 1);
               assert(contains(errorLog, 'Controller Disconnecting!') === 1);
               done();
