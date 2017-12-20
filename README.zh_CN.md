@@ -225,6 +225,36 @@ module.exports = app => {
 };
 ```
 
+### 路由
+
+路由主要负责对特定的 socket 连接不同的事件进行分发处理到对应的控制器。路由配置写在 `app/router.js` 中，实例参照上一节。
+
+除了，业务逻辑的路由之外，还有配置几个系统内置事件：
+
+- `disconnecting` 正在断开连接
+- `disconnect` 连接已经断开
+- `error` 发生了错误
+
+示例：
+
+`app/router.js`
+```js
+app.io.route('disconnect', app.io.controller.chat.disconnect);
+```
+
+`app/io/controller/chat.js`
+```js
+module.exports = (app) => {
+  class Controller extends app.Controller {
+    async disconnect() {
+      const message = this.ctx.args[0];
+      console.log(message);
+    }
+  }
+  return Controller
+};
+```
+
 ## 集群
 
 如果你的 Socket.IO 服务由多台服务器提供，那么必须思考集群方案。比如，广播，房间等功能，必须依赖集群方案。

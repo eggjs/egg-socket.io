@@ -226,6 +226,38 @@ module.exports = app => {
 };
 ```
 
+### Router
+
+A router is mainly responsible for distributing different events corresponding to a controller on a specific socket connection.
+
+It should be configured at `app/router.js` refer to the last chapter.
+
+Besides that, there are several system Event:
+
+- `disconnecting` doing the disconnect
+- `disconnect` connection has disconnected.
+- `error` Error occured
+
+Example：
+
+`app/router.js`
+```js
+app.io.route('disconnect', app.io.controller.chat.disconnect);
+```
+
+`app/io/controller/chat.js`
+```js
+module.exports = (app) => {
+  class Controller extends app.Controller {
+    async disconnect() {
+      const message = this.ctx.args[0];
+      console.log(message);
+    }
+  }
+  return Controller
+};
+```
+
 ## Cluster
 
 If your Socket.IO service is powered by mutil server, you must think about cluster solution.It can't work without cluster like broadcast ,rooms and so on.
