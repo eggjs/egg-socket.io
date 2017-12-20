@@ -303,7 +303,7 @@ describe('test/socketio.test.js', () => {
   });
 
   describe('error', () => {
-    it.only('Controller error', done => {
+    it('Controller error', done => {
       testControllerError('socket.io-controller-error', done);
     });
 
