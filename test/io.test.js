@@ -304,11 +304,11 @@ describe('test/socketio.test.js', () => {
   });
 
   describe('error', () => {
-    it('Controller error', done => {
+    it.only('Controller error', done => {
       testControllerError('socket.io-controller-error', done);
     });
 
-    it.only('Controller error async', done => {
+    it('Controller error async', done => {
       testControllerError('socket.io-controller-error-async', done);
     });
 
@@ -326,7 +326,6 @@ describe('test/socketio.test.js', () => {
             .then(() => sleep(500))
             .then(() => {
               const errorLog = getErrorLogContent(appName);
-              console.log('errorLog xxx:', errorLog);
               assert(contains(errorLog, 'Controller Disconnect!') === 1);
               assert(contains(errorLog, 'Controller Disconnecting!') === 1);
               done();
