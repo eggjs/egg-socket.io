@@ -4,7 +4,6 @@ const mm = require('egg-mock');
 const assert = require('assert');
 const request = require('supertest');
 const fs = require('fs');
-const sleep = require('ko-sleep');
 const pedding = require('pedding');
 const path = require('path');
 const rimraf = require('rimraf');
@@ -323,15 +322,22 @@ describe('test/socketio.test.js', () => {
         const socket = client('', { port: basePort });
         socket.on('disconnect', () => {
           app.close()
-            .then(() => sleep(500))
             .then(() => {
-              const errorLog = getErrorLogContent(appName);
-              // console.log('errorLog xxx:', errorLog);
-              assert(contains(errorLog, 'Controller Disconnect!') === 1);
-              assert(contains(errorLog, 'Controller Disconnecting!') === 1);
-              done();
+              return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  try {
+                    const errorLog = getErrorLogContent(appName);
+                    // console.log('errorLog xxx:', errorLog);
+                    assert(contains(errorLog, 'Controller Disconnect!') === 1);
+                    assert(contains(errorLog, 'Controller Disconnecting!') === 1);
+                    resolve();
+                  } catch (e) {
+                    reject(e);
+                  }
+                }, 1000);
+              });
             })
-            .catch(done);
+            .then(done, done);
         });
         socket.on('connect', () => socket.emit('chat', ''));
         setTimeout(() => {

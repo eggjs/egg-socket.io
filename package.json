@@ -28,7 +28,6 @@
     "egg-mock": "^3.13.1",
     "eslint": "^4.12.1",
     "eslint-config-egg": "^5.1.1",
-    "ko-sleep": "^1.0.3",
     "pedding": "^1.1.0",
     "rimraf": "^2.6.2",
     "semver": "^5.4.1",
