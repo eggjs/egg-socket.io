@@ -327,9 +327,9 @@ describe('test/socketio.test.js', () => {
                 setTimeout(() => {
                   try {
                     const errorLog = getErrorLogContent(appName);
+                    console.log('errorLog xxx:', errorLog);
                     assert(contains(errorLog, 'Controller Disconnect!') === 1);
                     assert(contains(errorLog, 'Controller Disconnecting!') === 1);
-                    console.log('errorLog xxx:', errorLog);
                     resolve();
                   } catch (e) {
                     reject(e);
