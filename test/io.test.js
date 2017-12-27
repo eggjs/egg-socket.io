@@ -246,6 +246,24 @@ describe('test/socketio.test.js', () => {
       });
 
     });
+
+    it('return without wait next()', done => {
+      const app = mm.cluster({
+        baseDir: 'apps/socket.io-packetMiddleware-return-async',
+        workers: 2,
+        sticky: true,
+      });
+
+      app.ready().then(() => {
+        const socket = client('', { port: basePort });
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('msg', r => {
+          assert(r === 'socket.io-packetMiddleware-return-async');
+          socket.close();
+        });
+        socket.emit('chat', 'test');
+      });
+    });
   });
 
   describe('session', () => {
