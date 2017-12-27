@@ -246,6 +246,24 @@ describe('test/socketio.test.js', () => {
       });
 
     });
+
+    it('return without wait next()', done => {
+      const app = mm.cluster({
+        baseDir: 'apps/socket.io-packetMiddleware-return-async',
+        workers: 2,
+        sticky: true,
+      });
+
+      app.ready().then(() => {
+        const socket = client('', { port: basePort });
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('msg', r => {
+          assert(r === 'socket.io-packetMiddleware-return-async');
+          socket.close();
+        });
+        socket.on('connect', () => socket.emit('chat', 'test'));
+      });
+    });
   });
 
   describe('session', () => {
@@ -311,12 +329,13 @@ describe('test/socketio.test.js', () => {
       testControllerError('socket.io-controller-error-async', done);
     });
 
-    function testControllerError(appName, done) {
+    function testControllerError(appName, _done) {
       const app = mm.cluster({
         baseDir: `apps/${appName}`,
         workers: 2,
         sticky: true,
       });
+      const done = pedding(_done, 2);
 
       app.ready().then(() => {
         const socket = client('', { port: basePort });
@@ -332,6 +351,10 @@ describe('test/socketio.test.js', () => {
           }, 1000);
         });
         socket.on('connect', () => socket.emit('chat', ''));
+        socket.on('error', e => {
+          assert(contains(e, 'Controller Error!') === 1);
+          done();
+        });
         setTimeout(() => {
           const errorLog = getErrorLogContent(appName);
           assert(contains(errorLog, 'Controller Error!') === 1);
@@ -348,17 +371,22 @@ describe('test/socketio.test.js', () => {
       testConnectionMiddlewareError('socket.io-connectionMiddleware-error-async', done);
     });
 
-    function testConnectionMiddlewareError(appName, done) {
+    function testConnectionMiddlewareError(appName, _done) {
       const app = mm.cluster({
         baseDir: `apps/${appName}`,
         workers: 2,
         sticky: true,
       });
+      const done = pedding(_done, 2);
 
       app.ready().then(() => {
         const socket = client('', { port: basePort });
         socket.on('disconnect', () => app.close().then(done, done));
         socket.on('connect', () => socket.emit('chat', ''));
+        socket.on('error', e => {
+          assert(contains(e, 'connectionMiddleware Error!') === 1);
+          done();
+        });
         setTimeout(() => {
           const errorLog = getErrorLogContent(appName);
           assert(contains(errorLog, 'connectionMiddleware Error!') === 1);
@@ -375,17 +403,22 @@ describe('test/socketio.test.js', () => {
       testPacketMiddlewareError('socket.io-packetMiddleware-error-async', done);
     });
 
-    function testPacketMiddlewareError(appName, done) {
+    function testPacketMiddlewareError(appName, _done) {
       const app = mm.cluster({
         baseDir: `apps/${appName}`,
         workers: 2,
         sticky: true,
       });
+      const done = pedding(_done, 2);
 
       app.ready().then(() => {
         const socket = client('', { port: basePort });
         socket.on('disconnect', () => app.close().then(done, done));
         socket.on('connect', () => socket.emit('chat', ''));
+        socket.on('error', e => {
+          assert(contains(e, 'packetMiddleware Error!') === 1);
+          done();
+        });
         setTimeout(() => {
           const errorLog = getErrorLogContent(appName);
           assert(contains(errorLog, 'packetMiddleware Error!') === 1);
