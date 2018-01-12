@@ -1,4 +1,10 @@
 
+4.0.4 / 2018-01-12
+==================
+
+  * feat: update deps & License
+  * fix: miss 'egg-core' dependency  may cause a error (#32)
+
 4.0.3 / 2017-12-27
 ==================
 
