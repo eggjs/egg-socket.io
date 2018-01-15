@@ -31,6 +31,7 @@ $ npm i egg-socket.io --save
 ## Requirements
 
 - Node.js >= 8.0
+- Egg.js >= 2.0
 
 ## Configuration
 
