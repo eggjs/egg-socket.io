@@ -1,4 +1,9 @@
 
+4.0.6 / 2018-01-16
+==================
+
+  * fix: when system event occured , should pass the right socket object (#34)
+
 4.0.5 / 2018-01-15
 ==================
 
