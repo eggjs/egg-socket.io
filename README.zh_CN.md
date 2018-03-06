@@ -279,6 +279,25 @@ exports.io = {
 
 egg 服务在启动时，会尝试连接 redis 服务，成功后，应用会顺利启动。
 
+## 应用于微信小程序服务端
+
+微信小程序所采用的 websocket 协议版本为13, 而 egg-socket.io 基于的 socket.io 支持协议版本为4 [socket.io-protocol](https://github.com/socketio/socket.io-protocol)
+
+可以封装一个适配小程序端的 socket.io, github 也有现成的库可以参考 [wxapp-socket-io](https://github.com/wxsocketio/wxapp-socket-io)， 使用方式与 example/client.js 中使用基本一致
+
+```
+// 小程序端示例代码
+import io  from 'vendor/wxapp-socket-io.js';
+	
+const socket = io('ws://127.0.0.1:7001');
+socket.on('connect', function () {
+  socket.emit('chat', 'hello world!');
+});
+socket.on('res', msg => {
+  console.log('res from server: %s!', msg);
+});
+```
+
 ## 问题 & 建议
 
 请访问 [here](https://github.com/eggjs/egg/issues).
