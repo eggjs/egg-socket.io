@@ -14,19 +14,29 @@
  * ```
  */
 
-import * as SocketIO from 'socket.io';
+import { Socket, Server } from 'socket.io';
 
 declare module 'egg' {
   export interface Application {
-    io: SocketIO.Server & EggSocketIO;
+    io: Serverr & Namespace & EggSocketIO;
   }
+
+  export interface Context {
+    socket: Socket
+  }
+
+  interface Namespace {
+    // 事件转发
+    route(event: string, handler: Function): any
+  }
+
   interface EggSocketIO {
     middleware: CustomMiddleware;
     controller: CustomController;
   }
 
-  /** declare custom middlerwares (connectionMiddleware & packetMiddlerware) in app/io */
+  // 自有项目编写的 Middleware
   interface CustomMiddleware { }
-  /** declare custom controllers in app/io */
+  // 自有项目编写的 Controler
   interface CustomController { }
 }

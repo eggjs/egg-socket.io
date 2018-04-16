@@ -21,9 +21,9 @@
     "socket.io-redis": "^5.2.0"
   },
   "devDependencies": {
-    "@types/socket.io": "^1.4.31",
+    "@types/socket.io": "^1.4.33",
     "autod": "^3.0.1",
-    "egg": "^2.2.0",
+    "egg": "^2.6.1",
     "egg-bin": "^4.3.7",
     "egg-ci": "^1.8.0",
     "egg-mock": "^3.14.0",
