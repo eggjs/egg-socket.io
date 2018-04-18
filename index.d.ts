@@ -26,7 +26,7 @@ declare module 'egg' {
   }
 
   interface Namespace {
-    // 事件转发
+    // Forward the event to the Controller
     route(event: string, handler: Function): any
   }
 
@@ -35,8 +35,27 @@ declare module 'egg' {
     controller: CustomController;
   }
 
-  // 自有项目编写的 Middleware
+    /**
+   * your own Middleware
+   *
+   * @example
+   * ```bash
+   * {
+   *    chat: Chat
+   * }
+   * ```
+   */
   interface CustomMiddleware { }
-  // 自有项目编写的 Controler
+
+  /**
+   * your own Controler
+   *
+   *```bash
+   * {
+   *    auth: auth;
+   *    filter: filter;
+   * }
+   * ```
+   */
   interface CustomController { }
 }
