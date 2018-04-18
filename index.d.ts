@@ -18,7 +18,7 @@ import { Socket, Server } from 'socket.io';
 
 declare module 'egg' {
   export interface Application {
-    io: Serverr & Namespace & EggSocketIO;
+    io: Server & Namespace & EggSocketIO;
   }
 
   export interface Context {
