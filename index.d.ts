@@ -14,19 +14,48 @@
  * ```
  */
 
-import * as SocketIO from 'socket.io';
+import { Socket, Server } from 'socket.io';
 
 declare module 'egg' {
   export interface Application {
-    io: SocketIO.Server & EggSocketIO;
+    io: Server & Namespace & EggSocketIO;
   }
+
+  export interface Context {
+    socket: Socket
+  }
+
+  interface Namespace {
+    // Forward the event to the Controller
+    route(event: string, handler: Function): any
+  }
+
   interface EggSocketIO {
     middleware: CustomMiddleware;
     controller: CustomController;
   }
 
-  /** declare custom middlerwares (connectionMiddleware & packetMiddlerware) in app/io */
+    /**
+   * your own Middleware
+   *
+   * @example
+   * ```bash
+   * {
+   *    chat: Chat
+   * }
+   * ```
+   */
   interface CustomMiddleware { }
-  /** declare custom controllers in app/io */
+
+  /**
+   * your own Controler
+   *
+   *```bash
+   * {
+   *    auth: auth;
+   *    filter: filter;
+   * }
+   * ```
+   */
   interface CustomController { }
 }
