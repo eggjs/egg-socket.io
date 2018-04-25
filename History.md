@@ -1,4 +1,11 @@
 
+4.0.8 / 2018-04-25
+==================
+
+  * chore: improve .d.ts declaration (#37)
+  * docs: Update user.js (#38)
+  * docs: add wechat little program solution doc (#36)
+
 4.0.7 / 2018-03-02
 ==================
 

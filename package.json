@@ -1,6 +1,6 @@
 {
   "name": "egg-socket.io",
-  "version": "4.0.7",
+  "version": "4.0.8",
   "description": "egg plugin for socket.io",
   "eggPlugin": {
     "name": "io"
@@ -52,7 +52,8 @@
     "app",
     "lib",
     "config",
-    "app.js"
+    "app.js",
+    "index.d.ts"
   ],
   "ci": {
     "version": "8, 9",
