@@ -65,7 +65,7 @@ exports.io = {
 
 #### uws
 
-If you want to replace the default `us` with [uws](https://github.com/uWebSockets/uWebSockets), you can config like this:
+If you want to replace the default `ws` with [uws](https://github.com/uWebSockets/uWebSockets), you can config like this:
 
 ```js
 exports.io = {
