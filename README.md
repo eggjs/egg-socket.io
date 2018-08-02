@@ -65,7 +65,7 @@ exports.io = {
 
 #### uws
 
-`note`: uws has been deprecated, please find another reliable library instead.
+**Note:** uws has been deprecated, please find another reliable library instead.
 
 If you want to replace the default `ws` with [uws](https://github.com/uWebSockets/uWebSockets), you can config like this:
 
