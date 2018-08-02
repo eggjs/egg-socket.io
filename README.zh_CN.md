@@ -65,6 +65,8 @@ exports.io = {
 
 #### uws
 
+**注意:** uws 已经被官方弃用，请寻找其他可靠的替代库。
+
 如果你想用 [uws](https://github.com/uWebSockets/uWebSockets) 替换掉默认的 `us` , 可以这样配置:
 
 ```js
