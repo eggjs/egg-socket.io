@@ -8,7 +8,6 @@ const pedding = require('pedding');
 const path = require('path');
 const rimraf = require('rimraf');
 const ioc = require('socket.io-client');
-const semver = require('semver');
 
 let basePort = 17001;
 
@@ -32,30 +31,28 @@ describe('test/socketio.test.js', () => {
     basePort++;
   });
 
-  if (semver.gt(process.version.substring(1), '7.6.0')) {
-    it('should async/await works ok', done => {
-      const app = mm.cluster({
-        baseDir: 'apps/socket.io-async',
-        workers: 1,
-        sticky: false,
+  it('should async/await works ok', done => {
+    const app = mm.cluster({
+      baseDir: 'apps/socket.io-async',
+      workers: 1,
+      sticky: false,
+    });
+    app.ready().then(() => {
+      const socket = client('', { port: basePort });
+      let success = 0;
+      socket.on('connect', () => {
+        socket.emit('chat-async-class', '');
+        socket.emit('chat-async-object', '');
       });
-      app.ready().then(() => {
-        const socket = client('', { port: basePort });
-        let success = 0;
-        socket.on('connect', () => {
-          socket.emit('chat-async-class', '');
-          socket.emit('chat-async-object', '');
-        });
-        socket.on('disconnect', () => app.close().then(done, done));
-        socket.on('res', msg => {
-          assert(msg === 'hello');
-          if (++success === 2) {
-            socket.close();
-          }
-        });
+      socket.on('disconnect', () => app.close().then(done, done));
+      socket.on('res', msg => {
+        assert(msg === 'hello');
+        if (++success === 2) {
+          socket.close();
+        }
       });
     });
-  }
+  });
 
   it('should controller class works ok', done => {
     const app = mm.cluster({
@@ -76,6 +73,26 @@ describe('test/socketio.test.js', () => {
         if (++success === 2) {
           socket.close();
         }
+      });
+    });
+  });
+
+  it('should customize generateId works ok', done => {
+    const app = mm.cluster({
+      baseDir: 'apps/socket.io-generateId',
+      workers: 1,
+      sticky: false,
+    });
+    app.ready().then(() => {
+      const socket = client('', { port: basePort });
+      socket.on('connect', () => {
+        assert(socket.id === 'This should be a random unique ID');
+        socket.emit('generateId', '');
+      });
+      socket.on('disconnect', () => app.close().then(done, done));
+      socket.on('res', msg => {
+        assert(msg === 'hello');
+        socket.close();
       });
     });
   });
