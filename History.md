@@ -1,4 +1,11 @@
 
+4.1.0 / 2018-08-29
+==================
+
+  * feat: Allow users to re-define new generatorID for Socket Server (#44)
+  * doc: add uws deprecated information (#43)
+  * docs: fix ws engine name (#40)
+
 4.0.8 / 2018-04-25
 ==================
 
