@@ -65,9 +65,9 @@ exports.io = {
 
 #### uws
 
-**Note:** `uws` has been deprecated, please find another reliable library instead.
+**Note: `uws` isn't supported in Nodejs 10.x or later version by experiment, and it has been deprecated, please find another reliable library instead.**
 
-If you want to replace the default `ws` with [uws](https://github.com/uWebSockets/uWebSockets), you can config like this:
+If you insist using [uws](https://www.npmjs.com/package/uws) instead of the default `ws`, you can config like this:
 
 ```js
 exports.io = {
