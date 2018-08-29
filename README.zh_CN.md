@@ -65,9 +65,9 @@ exports.io = {
 
 #### uws
 
-**注意:** `uws` 已经被官方弃用，请寻找其他可靠的替代库。
+**注意：目前实测发现 `uws` 在 Nodejs 10.x 及其后续版本中不再被支持；且 `uws` 已经被官方弃用，请寻找其他可靠的替代库。**
 
-如果你想用 [uws](https://github.com/uWebSockets/uWebSockets) 替换掉默认的 `us` , 可以这样配置:
+如坚持使用 [uws](https://www.npmjs.com/package/uws) 替换掉默认的 `ws` , 可以这样配置:
 
 ```js
 exports.io = {
