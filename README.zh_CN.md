@@ -65,7 +65,7 @@ exports.io = {
 
 #### uws
 
-**注意:** uws 已经被官方弃用，请寻找其他可靠的替代库。
+**注意:** `uws` 已经被官方弃用，请寻找其他可靠的替代库。
 
 如果你想用 [uws](https://github.com/uWebSockets/uWebSockets) 替换掉默认的 `us` , 可以这样配置:
 
@@ -78,6 +78,19 @@ exports.io = {
 更多 init 配置参考： [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1) .
 
 see [config/config.default.js](config/config.default.js) for more detail.
+
+### generateId
+
+**注意：** 此函数作为接口预留，便于你按照自己的规则为每一个 socket 生成唯一的 ID：
+
+```js
+exports.io = {
+  generateId: (request) => {
+        // Something like UUID.
+        return 'This should be a random unique ID';
+    }
+};
+```
 
 ## 部署
 

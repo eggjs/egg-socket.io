@@ -65,7 +65,7 @@ exports.io = {
 
 #### uws
 
-**Note:** uws has been deprecated, please find another reliable library instead.
+**Note:** `uws` has been deprecated, please find another reliable library instead.
 
 If you want to replace the default `ws` with [uws](https://github.com/uWebSockets/uWebSockets), you can config like this:
 
@@ -78,6 +78,19 @@ exports.io = {
 read more about init config at: [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1) .
 
 see [config/config.default.js](config/config.default.js) for more detail.
+
+### generateId
+
+**Note:** This function is left on purpose to override and generate a unique ID according to your own rule:
+
+```js
+exports.io = {
+  generateId: (request) => {
+        // Something like UUID.
+        return 'This should be a random unique ID';
+    }
+};
+```
 
 ## Deployment
 
