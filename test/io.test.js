@@ -8,6 +8,7 @@ const pedding = require('pedding');
 const path = require('path');
 const rimraf = require('rimraf');
 const ioc = require('socket.io-client');
+const compile = require('child_process');
 
 let basePort = 17001;
 
@@ -462,6 +463,63 @@ describe('test/socketio.test.js', () => {
         });
       });
     });
+  });
+
+  describe('ts for egg-socket starting now...', () => {
+    before(() => {
+      // Add new dynamic compiler to compile from ts to js
+      const destPath = path.resolve('./test/fixtures/apps/ts');
+      const compilerPath = path.resolve('./node_modules/typescript/bin/tsc');
+      compile.execSync(`node ${compilerPath} -p ${destPath}`);
+    });
+
+    it('should work with a common socketIO controller', done => {
+      const app = mm.cluster({
+        baseDir: 'apps/ts/socket.io-common',
+        workers: 1,
+        sticky: false,
+      });
+      app.ready().then(() => {
+        const socket = client('', { port: basePort });
+        let counter = 0;
+        socket.on('connect', () => {
+          socket.emit('chat', '');
+        });
+        socket.on('res', () => {
+          counter++;
+        });
+        socket.on('onBefore', () => {
+          counter++;
+        });
+        socket.on('onAfter', () => {
+          counter++;
+          assert(counter === 3);
+          socket.close();
+        });
+        socket.on('disconnect', () => app.close().then(done, done));
+      });
+    });
+
+    it('should work with a namespaced socketIO controller', done => {
+      const app = mm.cluster({
+        baseDir: 'apps/ts/socket.io-common',
+        workers: 1,
+        sticky: false,
+      });
+      app.ready().then(() => {
+        const socket = client('/ts_of', { port: basePort });
+        socket.on('connect', () => {
+          socket.emit('chat', '');
+        });
+        socket.on('disconnect', () => app.close().then(done, done));
+        socket.on('res', msg => {
+          assert(msg === 'tsHello!');
+          socket.close();
+        });
+      });
+    });
+
+
   });
 });
 
