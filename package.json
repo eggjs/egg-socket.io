@@ -22,6 +22,8 @@
   },
   "devDependencies": {
     "@types/socket.io": "^1.4.33",
+    "@types/node": "^10.9.4",
+    "typescript": "^3.0.3",
     "autod": "^3.0.1",
     "egg": "^2.6.1",
     "egg-bin": "^4.3.7",
@@ -38,7 +40,7 @@
     "webstorm-disable-index": "^1.2.0"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "scripts": {
     "test": "npm run lint -- --fix && npm run test-local",
