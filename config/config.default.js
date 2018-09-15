@@ -1,9 +1,24 @@
 'use strict';
 
 /**
- * socket.io default config
- * @member Config#io
- * @property {String} SOME_KEY - some description todo
+ * The default `io` config.
+ *
+ * `init`: This is the same configs in
+ * https://github.com/socketio/engine.io/blob/master/README.md#methods-1
+ *
+ * `namespace`:
+ *  i) If you wanna define your own namespace, just write something like:
+ *  ```js
+ *  namespace: {
+    'your_Namespace_Name': {
+      connectionMiddleware: [],
+      packetMiddleware: [],
+    },
+ *  ```
+ * If you don't want namespace, just use '/' into your namespace config.
+ *
+ * ii) Create a folder called `middleware`, where to put your
+ * connectionMiddlewares and packetMiddlewares.
  */
 exports.io = {
   init: {},

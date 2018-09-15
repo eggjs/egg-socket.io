@@ -65,9 +65,9 @@ exports.io = {
 
 #### uws
 
-**注意：目前实测发现 `uws` 在 Nodejs 10.x 及其后续版本中不再被支持；且 `uws` 已经被官方弃用，请寻找其他可靠的替代库。**
+**Egg Socket 内部默认使用 `ws` 引擎，[uws](https://www.npmjs.com/package/uws) 因为[某些原因](https://github.com/socketio/socket.io/issues/3319)被废止。**
 
-如坚持使用 [uws](https://www.npmjs.com/package/uws) 替换掉默认的 `ws` , 可以这样配置:
+如坚持需要使用，请按照以下配置即可：
 
 ```js
 exports.io = {
@@ -75,9 +75,8 @@ exports.io = {
 };
 ```
 
-更多 init 配置参考： [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1) .
-
-see [config/config.default.js](config/config.default.js) for more detail.
+- 有关更多 `init` 选项配置，请参考：[engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1) 。
+- 有关更多 `Egg Socket` 相关默认配置，请参考：[config.default.js](config/config.default.js)。
 
 ### generateId
 
