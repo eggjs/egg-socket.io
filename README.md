@@ -65,9 +65,9 @@ exports.io = {
 
 #### uws
 
-**Note: `uws` isn't supported in Nodejs 10.x or later version by experiment, and it has been deprecated, please find another reliable library instead.**
+**Egg's socket is using `ws`, [uws](https://www.npmjs.com/package/uws) is deprecated due to [some reasons](https://github.com/socketio/socket.io/issues/3319).**
 
-If you insist using [uws](https://www.npmjs.com/package/uws) instead of the default `ws`, you can config like this:
+If you insist using this, please config like this following:
 
 ```js
 exports.io = {
@@ -75,9 +75,8 @@ exports.io = {
 };
 ```
 
-read more about init config at: [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1) .
-
-see [config/config.default.js](config/config.default.js) for more detail.
+- For more options in `init` : [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1).
+- For more configs of `Egg Socket` in default : [config.default.js](config/config.default.js).
 
 ### generateId
 

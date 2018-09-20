@@ -36,7 +36,7 @@
     "semver": "^5.4.1",
     "socket.io-client": "^2.0.4",
     "supertest": "^3.0.0",
-    "uws": "^8.14.1",
+    "uws": "10.148.0",
     "webstorm-disable-index": "^1.2.0"
   },
   "engines": {
@@ -58,7 +58,7 @@
     "index.d.ts"
   ],
   "ci": {
-    "version": "8, 9",
+    "version": "8, 10",
     "license": true,
     "services": "redis-server"
   },
