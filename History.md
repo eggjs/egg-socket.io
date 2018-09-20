@@ -1,4 +1,9 @@
 
+4.1.3 / 2018-09-20
+==================
+
+  * fix (uws): Update this to a fixed version and whole project to Node 8,10 (#47)
+
 4.1.2 / 2018-09-12
 ==================
 
