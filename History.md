@@ -1,4 +1,9 @@
 
+4.1.4 / 2018-09-30
+==================
+
+  * fix: when use external cookie, ctx.session should work. (#48)
+
 4.1.3 / 2018-09-20
 ==================
 
