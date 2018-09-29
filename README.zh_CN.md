@@ -270,6 +270,14 @@ module.exports = (app) => {
 };
 ```
 
+### 会话
+
+`egg-socket.io` 支持会话，与普通的 HTTP 会话几乎一样。
+
+会话的创建和鉴权只发生在建立连接阶段。在包中间件和控制器中可以获取通过 `ctx.session` 获取会话对象，但是它只在连接创建。
+
+会话功能由 [egg-session](https://github.com/eggjs/egg-session) 实现，请确保它已经开启。
+
 ## 集群
 
 如果你的 Socket.IO 服务由多台服务器提供，那么必须思考集群方案。比如，广播，房间等功能，必须依赖集群方案。

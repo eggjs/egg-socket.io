@@ -7,3 +7,4 @@ coverage/
 run/
 .DS_Store
 *.swp
+dump.rdb
