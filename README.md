@@ -273,6 +273,14 @@ module.exports = (app) => {
 };
 ```
 
+### Session
+
+The session is supported by `egg-socket.io`. It behaviour just like the normal HTTP session. 
+
+Session creates or check just happens at the handshake period. Session can be accessed by `ctx.session` in packetMiddleware and controller, but it's only created at the at the handshake period.
+
+The feature is powered by [egg-session](https://github.com/eggjs/egg-session), make sure it has been enabled.
+
 ## Cluster
 
 If your Socket.IO service is powered by mutil server, you must think about cluster solution.It can't work without cluster like broadcast ,rooms and so on.
