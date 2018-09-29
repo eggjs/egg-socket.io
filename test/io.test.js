@@ -301,7 +301,7 @@ describe('test/socketio.test.js', () => {
             const cookie = res.headers['set-cookie'].join(';');
             const socket = client('', {
               extraHeaders: { cookie },
-              port: basePort
+              port: basePort,
             });
             socket.on('error', err => done(new Error(err)));
             socket.on('connect', () => socket.emit('chat', ''));
@@ -336,7 +336,7 @@ describe('test/socketio.test.js', () => {
             const cookie = res.headers['set-cookie'].join(';');
             const socket = client('', {
               extraHeaders: { cookie },
-              port: basePort
+              port: basePort,
             });
             socket.on('error', err => done(new Error(err)));
             socket.on('connect', () => socket.emit('chat', ''));
@@ -370,7 +370,7 @@ describe('test/socketio.test.js', () => {
             assert(!err, err);
             const socket = client('', { port: basePort });
             socket.on('error', err => {
-              if('auth failed!' === err){
+              if (err === 'auth failed!') {
                 done();
               } else {
                 done(new Error('should auth failed!'));
