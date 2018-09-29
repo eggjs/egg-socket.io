@@ -13,7 +13,7 @@ module.exports = app => {
     this.emit('join', app.config.disconnectFile);
 
     yield* next;
-    
+
     fs.writeFileSync(app.config.disconnectFile, 'true');
   };
 };

@@ -285,7 +285,7 @@ describe('test/socketio.test.js', () => {
   });
 
   describe('session', () => {
-    it('with session allowed', done => {
+    it('with cookie session allowed', done => {
       const app = mm.cluster({
         baseDir: 'apps/socket.io-session',
         workers: 2,
@@ -298,10 +298,48 @@ describe('test/socketio.test.js', () => {
           .expect(200)
           .expect('hello', function requestDone(err, res) {
             assert(!err, err);
-            const cookie = encodeURIComponent(res.headers['set-cookie'].join(';'));
-            const socket = client('', { query: 'cookie=' + cookie, port: basePort });
+            const cookie = res.headers['set-cookie'].join(';');
+            const socket = client('', {
+              extraHeaders: { cookie },
+              port: basePort
+            });
+            socket.on('error', err => done(new Error(err)));
             socket.on('connect', () => socket.emit('chat', ''));
-            socket.on('forbidden', () => done(new Error('forbidden')));
+            let disconnectFile = '';
+            socket.on('join', p => { disconnectFile = p; });
+            socket.on('res', msg => {
+              assert(msg === 'foo');
+              socket.close();
+              setTimeout(() => {
+                assert(fs.readFileSync(disconnectFile).toString(), 'true');
+                fs.unlinkSync(disconnectFile);
+                app.close().then(done, done);
+              }, 500);
+            });
+          });
+      });
+    });
+
+    it('with external session allowed', done => {
+      const app = mm.cluster({
+        baseDir: 'apps/socket.io-external-session',
+        workers: 2,
+        sticky: true,
+      });
+
+      app.ready().then(() => {
+        const req = request(`http://127.0.0.1:${basePort}`);
+        req.get('/home')
+          .expect(200)
+          .expect('hello', function requestDone(err, res) {
+            assert(!err, err);
+            const cookie = res.headers['set-cookie'].join(';');
+            const socket = client('', {
+              extraHeaders: { cookie },
+              port: basePort
+            });
+            socket.on('error', err => done(new Error(err)));
+            socket.on('connect', () => socket.emit('chat', ''));
             let disconnectFile = '';
             socket.on('join', p => { disconnectFile = p; });
             socket.on('res', msg => {
@@ -331,8 +369,13 @@ describe('test/socketio.test.js', () => {
           .expect('hello', function requestDone(err) {
             assert(!err, err);
             const socket = client('', { port: basePort });
-            socket.on('disconnect', () => app.close().then(done, done));
-            socket.on('forbidden', () => socket.close());
+            socket.on('error', err => {
+              if('auth failed!' === err){
+                done();
+              } else {
+                done(new Error('should auth failed!'));
+              }
+            });
           });
       });
     });
