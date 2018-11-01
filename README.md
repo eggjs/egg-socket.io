@@ -299,6 +299,16 @@ exports.io = {
   }
 };
 ```
+if you want to use redis sentinel mode, the config should be:
+
+```js
+exports.io = {
+  redis: {
+    sentinels:{ a list of sentinels with ip and port },
+    name: { group name of sentinel instances }
+  }
+};
+```
 
 Application will try to connect the redis server when booting.
 

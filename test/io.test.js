@@ -166,6 +166,23 @@ describe('test/socketio.test.js', () => {
     });
   });
 
+  it('should redis adapter works ok with ioredis', done => {
+    const app = mm.cluster({
+      baseDir: 'apps/socket.io-test-redis-sentinel',
+      workers: 2,
+      sticky: true,
+    });
+    app.ready().then(() => {
+      const socket = client('', { port: basePort });
+      socket.on('connect', () => socket.emit('chat', ''));
+      socket.on('disconnect', () => app.close().then(done, done));
+      socket.on('res', msg => {
+        assert(msg === 'hello');
+        socket.close();
+      });
+    });
+  });
+
   describe('connectionMiddleware', () => {
     it('should connectionMiddleware works ok when connection established & disconnected', done => {
       test('apps/socket.io-connectionMiddleware', done);

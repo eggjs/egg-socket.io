@@ -298,6 +298,16 @@ exports.io = {
   }
 };
 ```
+如果你想使用redis哨兵模式，可以这样配置：
+
+```js
+exports.io = {
+  redis: {
+    sentinels:{ a list of sentinels with ip and port },
+    name: { group name of sentinel instances }
+  }
+};
+```
 
 egg 服务在启动时，会尝试连接 redis 服务，成功后，应用会顺利启动。
 
