@@ -487,6 +487,25 @@ describe('test/socketio.test.js', () => {
         }, 500);
       });
     }
+
+    it('redis connection error', done => {
+      const appName = 'socket.io-test-redis-error';
+      const app = mm.cluster({
+        baseDir: `apps/${appName}`,
+        workers: 2,
+        sticky: true,
+      });
+      app.ready().then(() => {
+        setTimeout(() => {
+          app.close()
+            .then(() => {
+              const errorLog = getErrorLogContent(appName);
+              assert(contains(errorLog, 'connect ECONNREFUSED 127.0.0.1:6666') > 0);
+            })
+            .then(done, done);
+        }, 300);
+      });
+    });
   });
 
   describe('namespace', () => {
