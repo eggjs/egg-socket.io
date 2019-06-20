@@ -1,4 +1,9 @@
 
+4.1.6 / 2019-06-20
+==================
+
+  * bugfix: add error handle to redis adapter to avoid unexpected exit. (#55)
+
 4.1.5 / 2018-10-30
 ==================
 
