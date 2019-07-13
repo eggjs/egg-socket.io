@@ -49,7 +49,7 @@ exports.io = {
 
 ```js
 exports.io = {
-  init: { } // passed to engine.io
+  init: { }, // passed to engine.io
   namespace: {
     '/': {
       connectionMiddleware: [],
