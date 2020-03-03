@@ -188,7 +188,7 @@ pay attention to the namespace, the config will only work for a specific namespa
 module.exports = app => {
     return async (ctx, next) => {
         ctx.socket.emit('res', 'packet received!');
-        console.log('packet:', this.packet);
+        console.log('packet:', ctx.packet);
         await next();
     };
 };
