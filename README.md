@@ -250,7 +250,7 @@ It should be configured at `app/router.js` refer to the last chapter.
 Besides that, there are several system Event:
 
 - `disconnecting` doing the disconnect
-- `disconnect` connection has disconnected.
+- `disconnect` connection has disconnected
 - `error` Error occured
 
 Example：
@@ -275,17 +275,17 @@ module.exports = (app) => {
 
 ### Session
 
-The session is supported by `egg-socket.io`. It behaviour just like the normal HTTP session. 
+The session is supported by `egg-socket.io`. It's behaviour just like the normal HTTP session. 
 
-Session creates or check just happens at the handshake period. Session can be accessed by `ctx.session` in packetMiddleware and controller, but it's only created at the at the handshake period.
+Session creates or check just happens at the handshake period. Session can be accessed by `ctx.session` in packetMiddleware and controller, but it's only created at the handshake period.
 
 The feature is powered by [egg-session](https://github.com/eggjs/egg-session), make sure it has been enabled.
 
 ## Cluster
 
-If your Socket.IO service is powered by mutil server, you must think about cluster solution.It can't work without cluster like broadcast ,rooms and so on.
+If your Socket.IO service is powered by mutil server, you must think about cluster solution. It can't work without cluster like broadcast, rooms and so on.
 
-It's very easy to implement sharing source and event dispatch with with [socket.io-redis](https://github.com/socketio/socket.io-redis) built in.
+It's very easy to implement sharing source and event dispatch with [socket.io-redis](https://github.com/socketio/socket.io-redis) built in.
 
 config at `config/config.${env}.js` ：
 
