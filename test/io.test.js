@@ -87,7 +87,7 @@ describe('test/socketio.test.js', () => {
     app.ready().then(() => {
       const socket = client('', { port: basePort });
       socket.on('connect', () => {
-        assert(socket.id === 'This should be a random unique ID');
+        assert(socket.id === '1234567890');
         socket.emit('generateId', '');
       });
       socket.on('disconnect', () => app.close().then(done, done));
