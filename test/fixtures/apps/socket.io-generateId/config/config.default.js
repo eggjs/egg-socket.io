@@ -1,8 +1,10 @@
 'use strict';
 
 exports.io = {
-    generateId: (request) => {
-        return 'This should be a random unique ID';
+    namespace: {
+        '/': {
+            connectionMiddleware: ['generateId'],
+        },
     }
 };
 

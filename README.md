@@ -78,17 +78,35 @@ exports.io = {
 - For more options in `init` : [engine.io](https://github.com/socketio/engine.io/blob/master/README.md#methods-1).
 - For more configs of `Egg Socket` in default : [config.default.js](config/config.default.js).
 
-### generateId
+### Socket.id Generation
 
-**Note:** This function is left on purpose to override and generate a unique ID according to your own rule:
+**Notice：** The current "Socket.IO" doesn't support to generate `id` by overwriting the function, so we can only implement it by [middleware](#middleware).
+
+Suppose we have a middleware folder, and there's a `generateId.js` below:
+
+```js
+module.exports = app => {
+    return async (ctx, next) => {
+        // Here you can generate a unique ID for ctx.socket.id
+        // This is only a sample
+        // you can also get 'request' through 'ctx.request'
+        ctx.socket.id = '1234567890';
+        await next();
+    };
+};
+```
+
+Now you can refer the middleware directly in your `config.default.js` file:
 
 ```js
 exports.io = {
-  generateId: (request) => {
-        // Something like UUID.
-        return 'This should be a random unique ID';
+    namespace: {
+        '/': {
+            connectionMiddleware: ['generateId'],
+        },
     }
 };
+
 ```
 
 ## Deployment
