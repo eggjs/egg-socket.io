@@ -20,8 +20,8 @@
     "delegates": "^1.0.0",
     "is-type-of": "^1.2.1",
     "koa-compose": "^4.1.0",
-    "socket.io": "^2.1.1",
-    "socket.io-redis": "^5.2.0"
+    "socket.io": "^3.0.5",
+    "socket.io-redis": "^6.1.0"
   },
   "devDependencies": {
     "@types/node": "^10.9.4",
